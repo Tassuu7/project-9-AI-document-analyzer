@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Analyzer Studio - AI Document Analyzer</title>
+    <title>Live Intelligence Analyzer - AI Document Analyzer</title>
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="stylesheet" href="/static/css/glassmorphism.css">
     <link rel="stylesheet" href="/static/css/analyzer.css">
@@ -20,8 +20,8 @@
             <a href="/compare" class="nav-link">Document Diff</a>
             <a href="/compliance" class="nav-link">Compliance Center</a>
             <a href="/export" class="nav-link">Export</a>
-            <button class="btn btn-secondary" onclick="App.toggleTheme()">🌓 Theme</button>
-            <a href="/auth" class="btn btn-primary">Portal</a>
+            <button class="btn btn-secondary btn-sm" onclick="App.toggleTheme()">🌓 Theme</button>
+            <div id="navAuthBox"></div>
         </nav>
     </header>
 
@@ -29,15 +29,28 @@
         <!-- Left Pane: Input Editor -->
         <div class="glass-panel editor-pane">
             <div class="pane-header">
-                <h3>Document Ingestion</h3>
-                <div style="display: flex; gap: 0.5rem;">
-                    <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;" onclick="Analyzer.loadSample('nda')">Sample NDA</button>
-                    <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;" onclick="Analyzer.loadSample('breach')">Sample Audit</button>
+                <div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700;">Document Ingestion</h3>
+                    <small id="docWordCount" style="color: var(--text-secondary);">0 words</small>
+                </div>
+                <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+                    <button class="btn btn-secondary btn-sm" onclick="Analyzer.loadSample('nda')">Sample NDA</button>
+                    <button class="btn btn-secondary btn-sm" onclick="Analyzer.loadSample('breach')">Sample Audit</button>
+                    <button class="btn btn-secondary btn-sm" onclick="Analyzer.loadSample('financial')">Sample Financial</button>
+                    <button class="btn btn-secondary btn-sm" onclick="Analyzer.loadSample('medical')">Sample Medical</button>
                 </div>
             </div>
+
+            <!-- Drag and Drop Dropzone -->
+            <div id="fileDropzone" class="dropzone">
+                <input type="file" id="filePicker" style="display: none;" accept=".txt,.pdf,.docx,.csv,.json,.md">
+                <span style="font-size: 0.85rem; color: #a5b4fc;">📁 Drag & Drop PDF, Word, TXT, CSV, JSON or <u>Click to Browse</u></span>
+            </div>
+
             <textarea id="docInput" class="text-editor" placeholder="Paste contract text, regulatory policy, financial statement, or medical record here..."></textarea>
-            <div style="padding: 1rem; border-top: 1px solid var(--border-glass); display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 0.8rem; color: var(--text-secondary);">Zero external API dependencies &bull; 100% Private</span>
+            
+            <div style="padding: 0.85rem 1.25rem; border-top: 1px solid var(--border-glass); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.15);">
+                <button class="btn btn-secondary btn-sm" onclick="Analyzer.clearText()">🗑️ Clear</button>
                 <button id="analyzeBtn" class="btn btn-primary" onclick="Analyzer.runAnalysis()">⚡ Analyze Intelligence</button>
             </div>
         </div>
@@ -45,46 +58,75 @@
         <!-- Right Pane: Intelligence Output -->
         <div class="glass-panel results-pane">
             <div class="pane-header">
-                <h3>Intelligence Report</h3>
-                <span id="classBadge" class="badge badge-purple">Ready</span>
+                <div>
+                    <h3 style="font-size: 1.05rem; font-weight: 700;">Intelligence Report</h3>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.2rem;">
+                        <span id="classBadge" class="badge badge-purple">Classifying...</span>
+                        <span id="confBadge" class="badge badge-info">100% Confidence</span>
+                    </div>
+                </div>
+                <!-- Export Quick Actions -->
+                <div class="export-bar" style="border: none; padding: 0;">
+                    <button class="btn btn-secondary btn-sm" onclick="Analyzer.exportCurrent('json')">📄 JSON</button>
+                    <button class="btn btn-secondary btn-sm" onclick="Analyzer.exportCurrent('csv')">📊 CSV</button>
+                    <button class="btn btn-secondary btn-sm" onclick="Analyzer.exportCurrent('markdown')">📝 MD</button>
+                    <button class="btn btn-primary btn-sm" onclick="Analyzer.exportCurrent('html')">🖨️ Print / PDF</button>
+                </div>
             </div>
-            
-            <div id="placeholderBox" style="flex: 1; display: flex; align-items: center; justify-content: center; color: var(--text-muted); flex-direction: column; gap: 1rem;">
+
+            <div id="placeholderBox" style="flex: 1; display: none; align-items: center; justify-content: center; color: var(--text-muted); flex-direction: column; gap: 1rem;">
                 <div style="font-size: 3rem;">🔍</div>
                 <p>Paste text on the left and click <strong>Analyze Intelligence</strong></p>
             </div>
 
-            <div id="resultsContainer" class="results-scroll" style="display: none;">
-                <!-- Summary Card -->
+            <div id="resultsContainer" class="results-scroll">
+                <!-- Executive Summary -->
                 <div class="glass-panel" style="padding: 1.25rem;">
-                    <h4 style="margin-bottom: 0.5rem; color: var(--accent-secondary);">Executive Summary</h4>
-                    <p id="summaryText" style="font-size: 0.9rem; color: var(--text-primary); line-height: 1.6;"></p>
+                    <div class="card-title" style="color: var(--accent-cyan);">📑 Executive Summary</div>
+                    <p id="summaryText" style="font-size: 0.9rem; color: var(--text-primary); line-height: 1.7;"></p>
                 </div>
 
-                <!-- Risk & Metrics Row -->
+                <!-- Structured Obligations & Risks Grid -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <div class="glass-panel" style="padding: 1.25rem; text-align: center;">
-                        <h4 style="margin-bottom: 0.75rem; color: var(--accent-rose);">Risk Index</h4>
+                    <div class="glass-panel" style="padding: 1.25rem;">
+                        <div class="card-title" style="color: #6ee7b7;">📌 Key Obligations & Covenants</div>
+                        <ul id="keyObligationsList" style="padding-left: 1.2rem; font-size: 0.85rem; line-height: 1.6;"></ul>
+                    </div>
+                    <div class="glass-panel" style="padding: 1.25rem;">
+                        <div class="card-title" style="color: #fca5a5;">⚠️ Critical Risk Clauses</div>
+                        <ul id="keyRisksList" style="padding-left: 1.2rem; font-size: 0.85rem; line-height: 1.6;"></ul>
+                    </div>
+                </div>
+
+                <!-- Risk Score & Linguistic Profile -->
+                <div style="display: grid; grid-template-columns: 240px 1fr; gap: 1rem;">
+                    <div class="glass-panel" style="padding: 1.25rem; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                        <div class="card-title" style="justify-content: center; color: var(--accent-rose);">🛡️ Risk Index</div>
                         <div id="riskGauge"></div>
                     </div>
                     <div class="glass-panel" style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: center; gap: 0.75rem;">
-                        <h4 style="color: var(--accent-primary);">Linguistic Profile</h4>
-                        <div id="toneBadge" class="badge badge-info">Tone: Formal</div>
-                        <div id="polarityVal" style="font-size: 0.8rem; color: var(--text-secondary);">Polarity: 0.0</div>
-                        <div id="readabilityBadge" class="badge badge-success">Readability: Good</div>
-                        <div id="gradeLevelVal" style="font-size: 0.8rem; color: var(--text-secondary);">Grade Level: 12.0</div>
+                        <div class="card-title" style="color: var(--accent-primary);">📈 Linguistic & Readability Profile</div>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <span id="toneBadge" class="badge badge-info">Tone: Formal</span>
+                            <span id="readabilityBadge" class="badge badge-success">Flesch: 65</span>
+                        </div>
+                        <div id="polarityVal" style="font-size: 0.825rem; color: var(--text-secondary);">Polarity: +0.25</div>
+                        <div id="gradeLevelVal" style="font-size: 0.825rem; color: var(--text-secondary);">Grade Level: 12.0 (Standard Commercial)</div>
                     </div>
                 </div>
 
-                <!-- Compliance Violations -->
+                <!-- Compliance Audit -->
                 <div class="glass-panel" style="padding: 1.25rem;">
-                    <h4 style="margin-bottom: 0.75rem; color: var(--accent-amber);">Compliance Audit</h4>
+                    <div class="card-title" style="color: var(--accent-amber);">⚖️ Multi-Standard Regulatory Compliance Audit</div>
                     <div id="complianceList"></div>
                 </div>
 
                 <!-- Interactive Entity Viewer -->
                 <div class="glass-panel" style="padding: 1.25rem;">
-                    <h4 style="margin-bottom: 0.75rem; color: var(--accent-emerald);">Named Entities & PII Map</h4>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <div class="card-title" style="margin-bottom: 0; color: var(--accent-emerald);">🏷️ Named Entities & PII Intelligence Map</div>
+                        <button id="maskToggleBtn" class="btn btn-secondary btn-sm" onclick="Analyzer.toggleMask()">🛡️ Mask / Redact PII</button>
+                    </div>
                     <div id="highlightedText" class="highlighted-viewer"></div>
                 </div>
             </div>

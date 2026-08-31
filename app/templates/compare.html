@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Diff & Semantic Drift - AI Document Analyzer</title>
+    <title>Document Diff Studio - AI Document Analyzer</title>
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="stylesheet" href="/static/css/glassmorphism.css">
     <link rel="stylesheet" href="/static/css/analyzer.css">
@@ -20,61 +20,94 @@
             <a href="/compare" class="nav-link active">Document Diff</a>
             <a href="/compliance" class="nav-link">Compliance Center</a>
             <a href="/export" class="nav-link">Export</a>
-            <button class="btn btn-secondary" onclick="App.toggleTheme()">🌓 Theme</button>
-            <a href="/auth" class="btn btn-primary">Portal</a>
+            <button class="btn btn-secondary btn-sm" onclick="App.toggleTheme()">🌓 Theme</button>
+            <div id="navAuthBox"></div>
         </nav>
     </header>
 
-    <div class="analyzer-workspace">
+    <main class="analyzer-workspace" style="grid-template-columns: 1fr 1fr;">
+        <!-- Left: Version A -->
         <div class="glass-panel editor-pane">
             <div class="pane-header">
-                <h3>Version A (Original)</h3>
+                <h3>Document Version A (Base)</h3>
+                <button class="btn btn-secondary btn-sm" onclick="loadSampleDiff()">Load Sample Revision</button>
             </div>
-            <textarea id="diffDocA" class="text-editor" placeholder="Paste original document text..."></textarea>
+            <textarea id="diffTextA" class="text-editor" placeholder="Paste original baseline agreement..."></textarea>
         </div>
 
+        <!-- Right: Version B -->
         <div class="glass-panel editor-pane">
             <div class="pane-header">
-                <h3>Version B (Modified)</h3>
-                <button class="btn btn-primary" onclick="runDiff()">Compare Versions</button>
+                <h3>Document Version B (Modified)</h3>
+                <button id="compareBtn" class="btn btn-primary btn-sm" onclick="runDiff()">⚡ Compare Versions</button>
             </div>
-            <textarea id="diffDocB" class="text-editor" placeholder="Paste revised document text..."></textarea>
+            <textarea id="diffTextB" class="text-editor" placeholder="Paste modified or redlined version..."></textarea>
         </div>
-    </div>
+    </main>
 
-    <div id="diffResults" class="dashboard-container" style="display: none; margin-top: 1rem;">
-        <div class="glass-panel" style="padding: 1.5rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h3>Comparison Metrics</h3>
-                <div id="similarityBadge" class="badge badge-success">Similarity: 100%</div>
+    <!-- Diff Results Panel -->
+    <div id="diffResultsBox" class="glass-panel" style="max-width: 1600px; margin: 0 auto 2rem auto; padding: 1.5rem; display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 700;">Side-by-Side Semantic Diff Matrix</h3>
+            <div style="display: flex; gap: 0.6rem;">
+                <span id="diffAdded" class="badge badge-success">+0 Added</span>
+                <span id="diffDeleted" class="badge badge-danger">-0 Deleted</span>
+                <span id="diffModified" class="badge badge-warning">~0 Modified</span>
+                <span id="diffSimilarity" class="badge badge-purple">Similarity: 100%</span>
             </div>
-            <div id="diffSummary" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;"></div>
         </div>
+        <div id="diffViewer" class="highlighted-viewer" style="max-height: 450px;"></div>
     </div>
 
     <script src="/static/js/app.js"></script>
     <script>
+        function loadSampleDiff() {
+            document.getElementById("diffTextA").value = `CONFIDENTIALITY AND NON-DISCLOSURE AGREEMENT\n1. Term: This agreement is effective for two (2) years from October 01, 2026.\n2. Standard of Care: Receiving party shall exercise reasonable care to protect trade secrets.\n3. Limitation of Liability: Neither party shall be liable for consequential damages.`;
+            document.getElementById("diffTextB").value = `CONFIDENTIALITY AND NON-DISCLOSURE AGREEMENT\n1. Term: This agreement is effective for five (5) years from October 01, 2026.\n2. Standard of Care: Receiving party shall exercise utmost and highest standard of care.\n3. Limitation of Liability: Total liability shall be capped at $1,000,000 USD.\n4. Governing Law: State of California.`;
+            runDiff();
+        }
+
         async function runDiff() {
-            const a = document.getElementById("diffDocA").value;
-            const b = document.getElementById("diffDocB").value;
-            if(!a || !b) {
-                App.showToast("Please provide both versions", "warning");
+            const textA = document.getElementById("diffTextA").value.trim();
+            const textB = document.getElementById("diffTextB").value.trim();
+            if (!textA || !textB) {
+                App.showToast("Please provide both versions A and B", "warning");
                 return;
             }
+
             try {
                 const res = await App.request("/api/compare", {
                     method: "POST",
-                    body: JSON.stringify({ text_a: a, text_b: b })
+                    body: JSON.stringify({ text_a: textA, text_b: textB })
                 });
+                
                 const data = res.data;
-                document.getElementById("diffResults").style.display = "block";
-                document.getElementById("similarityBadge").innerText = `Similarity: ${data.similarity_score}% (Drift: ${data.semantic_drift_percentage}%)`;
-                document.getElementById("diffSummary").innerText = `Modifications: ${data.lines_modified} | Additions: ${data.lines_added} | Deletions: ${data.lines_deleted}`;
-                App.showToast("Diff Computed Successfully", "success");
+                document.getElementById("diffResultsBox").style.display = "block";
+                document.getElementById("diffAdded").innerText = `+${data.lines_added} Added`;
+                document.getElementById("diffDeleted").innerText = `-${data.lines_deleted} Deleted`;
+                document.getElementById("diffModified").innerText = `~${data.lines_modified} Modified`;
+                document.getElementById("diffSimilarity").innerText = `Similarity: ${Math.round(data.similarity_score * 100)}%`;
+
+                let html = "";
+                data.diff_lines.forEach(line => {
+                    if (line.startsWith("+")) {
+                        html += `<div style="background: rgba(16,185,129,0.15); color: #6ee7b7; padding: 2px 8px;">${App.escapeHtml(line)}</div>`;
+                    } else if (line.startsWith("-")) {
+                        html += `<div style="background: rgba(244,63,94,0.15); color: #fda4af; padding: 2px 8px;">${App.escapeHtml(line)}</div>`;
+                    } else {
+                        html += `<div style="color: var(--text-secondary); padding: 2px 8px;">${App.escapeHtml(line)}</div>`;
+                    }
+                });
+                document.getElementById("diffViewer").innerHTML = html;
+                App.showToast("Diff Comparison Complete!", "success");
             } catch(e) {
-                App.showToast(e.message, "error");
+                App.showToast(e.message || "Comparison failed", "error");
             }
         }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadSampleDiff();
+        });
     </script>
 </body>
 </html>

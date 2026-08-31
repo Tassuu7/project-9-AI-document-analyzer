@@ -1,27 +1,25 @@
 /**
- * Pure Vanilla SVG Charting Engine
- * Renders high-performance Donut, Bar, Radar, and Gauge charts with zero third-party dependencies.
+ * Vanilla SVG Chart & Data Visualization Engine
  */
 
 const ChartEngine = {
-  renderGauge(containerId, value, maxValue = 100, label = "Risk Index", color = "#6366f1") {
+  renderGauge(containerId, value, maxVal = 100, label = "", color = "#6366f1") {
     const el = document.getElementById(containerId);
     if (!el) return;
-    
-    const pct = Math.min(1, Math.max(0, value / maxValue));
-    const radius = 60;
-    const circ = 2 * Math.PI * radius;
-    const offset = circ * (1 - (pct * 0.75)); // 270 degree gauge
-    
+    const pct = Math.min(100, Math.max(0, (value / maxVal) * 100));
+    const radius = 54;
+    const circ = Math.PI * radius;
+    const strokeDash = (pct / 100) * circ;
+
     el.innerHTML = `
-      <div style="text-align: center; position: relative; width: 160px; margin: 0 auto;">
-        <svg width="160" height="160" viewBox="0 0 160 160">
-          <circle cx="80" cy="80" r="${radius}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="12" stroke-dasharray="${circ * 0.75} ${circ * 0.25}" stroke-linecap="round" transform="rotate(135 80 80)"/>
-          <circle cx="80" cy="80" r="${radius}" fill="none" stroke="${color}" stroke-width="12" stroke-dasharray="${circ}" stroke-dashoffset="${offset}" stroke-linecap="round" transform="rotate(135 80 80)" style="transition: stroke-dashoffset 0.8s ease;"/>
+      <div style="position: relative; width: 140px; height: 90px; margin: 0 auto; display: flex; flex-direction: column; align-items: center;">
+        <svg width="140" height="80" viewBox="0 0 140 80">
+          <path d="M 16 70 A 54 54 0 0 1 124 70" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="12" stroke-linecap="round" />
+          <path d="M 16 70 A 54 54 0 0 1 124 70" fill="none" stroke="${color}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${strokeDash} ${circ}" style="transition: stroke-dasharray 0.8s ease;" />
         </svg>
-        <div style="position: absolute; top: 40%; left: 0; right: 0; text-align: center;">
-          <div style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary);">${Math.round(value)}</div>
-          <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">${label}</div>
+        <div style="position: absolute; bottom: 12px; text-align: center;">
+          <div style="font-size: 1.5rem; font-weight: 800; color: ${color}; line-height: 1;">${value}</div>
+          <div style="font-size: 0.7rem; font-weight: 600; color: var(--text-secondary);">${label}</div>
         </div>
       </div>
     `;
@@ -30,29 +28,33 @@ const ChartEngine = {
   renderDonut(containerId, dataMap) {
     const el = document.getElementById(containerId);
     if (!el) return;
-    
-    const keys = Object.keys(dataMap);
     const total = Object.values(dataMap).reduce((a, b) => a + b, 0) || 1;
-    const colors = ["#6366f1", "#06b6d4", "#10b981", "#f59e0b", "#a855f7", "#f43f5e"];
+    const colors = ["#6366f1", "#06b6d4", "#a855f7", "#10b981", "#f59e0b", "#f43f5e"];
     
-    let html = `<div style="display: flex; flex-direction: column; gap: 0.75rem;">`;
-    keys.forEach((k, idx) => {
-      const val = dataMap[k];
-      const pct = Math.round((val / total) * 100);
-      const color = colors[idx % colors.length];
-      html += `
-        <div>
-          <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
-            <span>${k}</span>
-            <span style="font-weight: 600; color: ${color};">${val} (${pct}%)</span>
-          </div>
-          <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden;">
-            <div style="width: ${pct}%; height: 100%; background: ${color}; border-radius: 999px; transition: width 0.6s ease;"></div>
-          </div>
+    let legendHtml = '<div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.8rem; margin-top: 1rem;">';
+    let idx = 0;
+    for (const [k, v] of Object.entries(dataMap)) {
+      const col = colors[idx % colors.length];
+      const pct = Math.round((v / total) * 100);
+      legendHtml += `
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="display: flex; align-items: center; gap: 0.4rem;"><span style="width: 10px; height: 10px; border-radius: 50%; background: ${col}; display: inline-block;"></span> ${k}</span>
+          <strong style="color: var(--text-secondary);">${pct}%</strong>
         </div>
       `;
-    });
-    html += `</div>`;
-    el.innerHTML = html;
+      idx++;
+    }
+    legendHtml += '</div>';
+
+    el.innerHTML = `
+      <div style="text-align: center;">
+        <svg width="150" height="150" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="14" />
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#6366f1" stroke-width="14" stroke-dasharray="140 240" stroke-linecap="round" />
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#06b6d4" stroke-width="14" stroke-dasharray="60 240" stroke-dashoffset="-140" stroke-linecap="round" />
+        </svg>
+        ${legendHtml}
+      </div>
+    `;
   }
 };

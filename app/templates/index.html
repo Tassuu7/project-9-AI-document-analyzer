@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Document Analyzer Enterprise Platform</title>
+    <title>AI Document Analyzer - Enterprise Intelligence Platform</title>
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="stylesheet" href="/static/css/glassmorphism.css">
     <link rel="stylesheet" href="/static/css/dashboard.css">
@@ -20,57 +20,56 @@
             <a href="/compare" class="nav-link">Document Diff</a>
             <a href="/compliance" class="nav-link">Compliance Center</a>
             <a href="/export" class="nav-link">Export</a>
-            <button class="btn btn-secondary" onclick="App.toggleTheme()">🌓 Theme</button>
-            <a href="/auth" class="btn btn-primary">Login / Portal</a>
+            <button class="btn btn-secondary btn-sm" onclick="App.toggleTheme()">🌓 Theme</button>
+            <div id="navAuthBox"></div>
         </nav>
     </header>
 
-    <main class="dashboard-container" style="text-align: center; padding-top: 4rem;">
-        <div style="max-width: 800px; margin: 0 auto;">
-            <span class="badge badge-purple" style="margin-bottom: 1rem;">Proprietary &bull; 100% Offline NLP Engine &bull; Zero API Keys</span>
-            <h1 style="font-size: 3.2rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; background: linear-gradient(135deg, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                Next-Generation Intelligent Document Analysis & Compliance Auditing
-            </h1>
-            <p style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2rem;">
-                Autonomous linguistic parsing, multi-framework regulatory audits (GDPR, HIPAA, SOC 2, PCI-DSS), entity recognition, risk scoring, and structural diffing.
-            </p>
-            <div style="display: flex; gap: 1rem; justify-content: center;">
-                <a href="/analyze" class="btn btn-primary" style="padding: 0.8rem 1.8rem; font-size: 1rem;">⚡ Open Live Analyzer</a>
-                <a href="/dashboard" class="btn btn-secondary" style="padding: 0.8rem 1.8rem; font-size: 1rem;">📊 Telemetry Dashboard</a>
-            </div>
+    <main class="dashboard-container" style="text-align: center; padding-top: 3.5rem;">
+        <div class="badge badge-purple" style="padding: 0.5rem 1.2rem; font-size: 0.85rem; margin-bottom: 1.5rem;">
+            🚀 Enterprise AI Document Analyzer v2.4.0 &bull; 100% Offline NLP
+        </div>
+        
+        <h1 style="font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; max-width: 900px; margin: 0 auto 1.2rem auto; line-height: 1.15;">
+            Autonomous Document Intelligence, Compliance Auditing & Risk Scoring
+        </h1>
+        
+        <p style="color: var(--text-secondary); font-size: 1.15rem; max-width: 720px; margin: 0 auto 2.5rem auto; line-height: 1.6;">
+            Deep linguistic parsing, multi-framework regulatory compliance checks (GDPR, HIPAA, SOC 2, PCI-DSS), entity recognition, and side-by-side semantic diff comparison with zero external API dependencies.
+        </p>
+
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 3.5rem;">
+            <a href="/analyze" class="btn btn-primary" style="padding: 0.85rem 2rem; font-size: 1rem;">⚡ Launch Live Analyzer Studio</a>
+            <a href="/dashboard" class="btn btn-secondary" style="padding: 0.85rem 2rem; font-size: 1rem;">📊 Open Telemetry Dashboard</a>
         </div>
 
-        <div class="stats-grid" style="margin-top: 4rem; text-align: left;">
+        <div class="stats-grid" style="text-align: left;">
             <div class="glass-panel stat-card">
                 <div class="stat-icon" style="color: #6366f1;">🧠</div>
                 <div class="stat-content">
-                    <h4>AI Engine</h4>
-                    <div class="stat-value">50,000+ LOC</div>
-                    <small style="color: var(--text-secondary);">Pure Python Standard Library</small>
+                    <h4>100% Offline AI Engines</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Bayesian classification, TF-IDF vectorization, TextRank graph summarization.</p>
                 </div>
             </div>
             <div class="glass-panel stat-card">
                 <div class="stat-icon" style="color: #10b981;">🛡️</div>
                 <div class="stat-content">
-                    <h4>Compliance</h4>
-                    <div class="stat-value">6 Standards</div>
-                    <small style="color: var(--text-secondary);">GDPR, HIPAA, SOC2, PCI-DSS</small>
+                    <h4>Multi-Framework Compliance</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Automated violation detection for GDPR, HIPAA, SOC 2, and PCI-DSS.</p>
+                </div>
+            </div>
+            <div class="glass-panel stat-card">
+                <div class="stat-icon" style="color: #f59e0b;">🏷️</div>
+                <div class="stat-content">
+                    <h4>NER & PII Redaction</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Extract and sanitize personal identifiers, banking credentials, dates, and amounts.</p>
                 </div>
             </div>
             <div class="glass-panel stat-card">
                 <div class="stat-icon" style="color: #06b6d4;">📑</div>
                 <div class="stat-content">
-                    <h4>Multi-Format</h4>
-                    <div class="stat-value">PDF/DOCX/TXT</div>
-                    <small style="color: var(--text-secondary);">CSV, JSON & Markdown</small>
-                </div>
-            </div>
-            <div class="glass-panel stat-card">
-                <div class="stat-icon" style="color: #f59e0b;">⚡</div>
-                <div class="stat-content">
-                    <h4>Latency</h4>
-                    <div class="stat-value">&lt; 15 ms</div>
-                    <small style="color: var(--text-secondary);">Instant Local Processing</small>
+                    <h4>Semantic Diff & Compare</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Side-by-side redline comparison with structural drift and risk delta.</p>
                 </div>
             </div>
         </div>

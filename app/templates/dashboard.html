@@ -20,80 +20,102 @@
             <a href="/compare" class="nav-link">Document Diff</a>
             <a href="/compliance" class="nav-link">Compliance Center</a>
             <a href="/export" class="nav-link">Export</a>
-            <button class="btn btn-secondary" onclick="App.toggleTheme()">🌓 Theme</button>
-            <a href="/auth" class="btn btn-primary">Portal</a>
+            <button class="btn btn-secondary btn-sm" onclick="App.toggleTheme()">🌓 Theme</button>
+            <div id="navAuthBox"></div>
         </nav>
     </header>
 
     <main class="dashboard-container">
-        <h2>Enterprise Intelligence Telemetry</h2>
-        
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h2 style="font-size: 1.75rem; font-weight: 800;">Enterprise Telemetry Dashboard</h2>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Real-time analytical metrics, compliance posture, and repository monitoring.</p>
+            </div>
+            <a href="/analyze" class="btn btn-primary">⚡ Ingest New Document</a>
+        </div>
+
         <div class="stats-grid">
             <div class="glass-panel stat-card">
                 <div class="stat-icon" style="color: #6366f1;">📑</div>
                 <div class="stat-content">
                     <h4>Documents Analyzed</h4>
-                    <div id="statDocs" class="stat-value">124</div>
+                    <div id="statDocs" class="stat-value">128</div>
+                    <small style="color: var(--text-secondary);">Stored & Indexed</small>
                 </div>
             </div>
             <div class="glass-panel stat-card">
                 <div class="stat-icon" style="color: #f43f5e;">⚠️</div>
                 <div class="stat-content">
-                    <h4>Avg Risk Index</h4>
-                    <div id="statRisk" class="stat-value">28.4</div>
+                    <h4>Average Risk Index</h4>
+                    <div id="statRisk" class="stat-value">24.5</div>
+                    <small style="color: #34d399;">Acceptable Band</small>
                 </div>
             </div>
             <div class="glass-panel stat-card">
                 <div class="stat-icon" style="color: #10b981;">🛡️</div>
                 <div class="stat-content">
-                    <h4>Compliance Rate</h4>
-                    <div id="statComp" class="stat-value">94.2%</div>
+                    <h4>Compliance Pass Rate</h4>
+                    <div class="stat-value">96.8%</div>
+                    <small style="color: var(--text-secondary);">6 Standards Audited</small>
                 </div>
             </div>
             <div class="glass-panel stat-card">
                 <div class="stat-icon" style="color: #06b6d4;">👥</div>
                 <div class="stat-content">
                     <h4>Active Analysts</h4>
-                    <div id="statUsers" class="stat-value">8</div>
+                    <div id="statUsers" class="stat-value">12</div>
+                    <small style="color: var(--text-secondary);">Role-Based RBAC</small>
                 </div>
             </div>
         </div>
 
         <div class="main-grid">
             <div class="glass-panel" style="padding: 1.5rem;">
-                <h3 style="margin-bottom: 1rem;">Recent Ingested Documents</h3>
+                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Recent Repository Documents</h3>
                 <table class="data-table">
                     <thead>
                         <tr>
                             <th>Document Name</th>
-                            <th>Type</th>
+                            <th>Classification</th>
                             <th>Status</th>
-                            <th>Timestamp</th>
-                            <th>Action</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="recentDocsTable">
                         <tr>
                             <td>Master_Services_Agreement_2026.docx</td>
-                            <td><span class="badge badge-purple">DOCX</span></td>
+                            <td><span class="badge badge-purple">Commercial Contract</span></td>
                             <td><span class="badge badge-success">Completed</span></td>
-                            <td>Just now</td>
-                            <td><a href="/analyze" class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">View</a></td>
+                            <td><a href="/analyze" class="btn btn-secondary btn-sm">Analyze</a></td>
                         </tr>
                         <tr>
-                            <td>HIPAA_Patient_Privacy_Policy.pdf</td>
-                            <td><span class="badge badge-danger">PDF</span></td>
+                            <td>Mutual_Non_Disclosure_Agreement.pdf</td>
+                            <td><span class="badge badge-info">NDA</span></td>
                             <td><span class="badge badge-success">Completed</span></td>
-                            <td>12m ago</td>
-                            <td><a href="/analyze" class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">View</a></td>
+                            <td><a href="/analyze" class="btn btn-secondary btn-sm">Analyze</a></td>
+                        </tr>
+                        <tr>
+                            <td>Q3_Consolidated_Financial_10K.csv</td>
+                            <td><span class="badge badge-warning">Financial 10-K</span></td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                            <td><a href="/analyze" class="btn btn-secondary btn-sm">Analyze</a></td>
+                        </tr>
+                        <tr>
+                            <td>HIPAA_Patient_Privacy_Disclosure.txt</td>
+                            <td><span class="badge badge-danger">Medical / HIPAA</span></td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                            <td><a href="/analyze" class="btn btn-secondary btn-sm">Analyze</a></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div class="glass-panel" style="padding: 1.5rem;">
-                <h3 style="margin-bottom: 1rem;">Document Class Distribution</h3>
+            <div class="glass-panel" style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Document Taxonomy Distribution</h3>
                 <div id="classDonut"></div>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <a href="/compliance" class="btn btn-secondary" style="width: 100%;">View Regulatory Knowledge Base</a>
+                </div>
             </div>
         </div>
     </main>
@@ -103,12 +125,21 @@
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             ChartEngine.renderDonut("classDonut", {
-                "Commercial Contracts": 45,
-                "NDA & Confidentiality": 32,
-                "Regulatory & Privacy": 24,
-                "Financial Statements": 15,
-                "Technical Specs": 8
+                "Commercial Contracts": 48,
+                "NDA & Confidentiality": 36,
+                "Regulatory & Privacy": 26,
+                "Financial Statements": 18,
+                "Clinical & Medical": 12
             });
+
+            try {
+                const res = await App.request("/api/stats/dashboard");
+                if (res.data) {
+                    document.getElementById("statDocs").innerText = res.data.total_documents || 128;
+                    document.getElementById("statRisk").innerText = res.data.average_risk_score || 24.5;
+                    document.getElementById("statUsers").innerText = res.data.total_users || 12;
+                }
+            } catch(e) {}
         });
     </script>
 </body>
