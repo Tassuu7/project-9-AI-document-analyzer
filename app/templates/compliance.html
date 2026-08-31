@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regulatory Compliance Center - AI Document Analyzer</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/glassmorphism.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+    <header class="glass-nav">
+        <div class="nav-brand">
+            <span>⚡ DocIntel Enterprise</span>
+        </div>
+        <nav class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+            <a href="/analyze" class="nav-link">Live Analyzer</a>
+            <a href="/compare" class="nav-link">Document Diff</a>
+            <a href="/compliance" class="nav-link active">Compliance Center</a>
+            <a href="/export" class="nav-link">Export</a>
+            <button class="btn btn-secondary" onclick="App.toggleTheme()">🌓 Theme</button>
+            <a href="/auth" class="btn btn-primary">Portal</a>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <h2>Regulatory Frameworks & Rule Knowledge Base</h2>
+        
+        <div class="stats-grid">
+            <div class="glass-panel" style="padding: 1.5rem;">
+                <span class="badge badge-purple">EU Regulation</span>
+                <h3 style="margin: 0.5rem 0;">GDPR</h3>
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">General Data Protection Regulation covering Articles 1-99, consent, DPO, and right to erasure.</p>
+            </div>
+            <div class="glass-panel" style="padding: 1.5rem;">
+                <span class="badge badge-danger">US Healthcare</span>
+                <h3 style="margin: 0.5rem 0;">HIPAA</h3>
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">Health Insurance Portability & Accountability Act PHI privacy safeguards and BAA agreements.</p>
+            </div>
+            <div class="glass-panel" style="padding: 1.5rem;">
+                <span class="badge badge-info">AICPA Trust</span>
+                <h3 style="margin: 0.5rem 0;">SOC 2</h3>
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">Security, Availability, Confidentiality, Processing Integrity, and Privacy Trust Criteria.</p>
+            </div>
+            <div class="glass-panel" style="padding: 1.5rem;">
+                <span class="badge badge-warning">Payment Card</span>
+                <h3 style="margin: 0.5rem 0;">PCI-DSS 4.0</h3>
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">Cardholder data environment protections, PAN masking, and prohibition of CVV storage.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

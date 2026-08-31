@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telemetry Dashboard - AI Document Analyzer</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/glassmorphism.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+    <header class="glass-nav">
+        <div class="nav-brand">
+            <span>⚡ DocIntel Enterprise</span>
+        </div>
+        <nav class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/dashboard" class="nav-link active">Dashboard</a>
+            <a href="/analyze" class="nav-link">Live Analyzer</a>
+            <a href="/compare" class="nav-link">Document Diff</a>
+            <a href="/compliance" class="nav-link">Compliance Center</a>
+            <a href="/export" class="nav-link">Export</a>
+            <button class="btn btn-secondary" onclick="App.toggleTheme()">🌓 Theme</button>
+            <a href="/auth" class="btn btn-primary">Portal</a>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <h2>Enterprise Intelligence Telemetry</h2>
+        
+        <div class="stats-grid">
+            <div class="glass-panel stat-card">
+                <div class="stat-icon" style="color: #6366f1;">📑</div>
+                <div class="stat-content">
+                    <h4>Documents Analyzed</h4>
+                    <div id="statDocs" class="stat-value">124</div>
+                </div>
+            </div>
+            <div class="glass-panel stat-card">
+                <div class="stat-icon" style="color: #f43f5e;">⚠️</div>
+                <div class="stat-content">
+                    <h4>Avg Risk Index</h4>
+                    <div id="statRisk" class="stat-value">28.4</div>
+                </div>
+            </div>
+            <div class="glass-panel stat-card">
+                <div class="stat-icon" style="color: #10b981;">🛡️</div>
+                <div class="stat-content">
+                    <h4>Compliance Rate</h4>
+                    <div id="statComp" class="stat-value">94.2%</div>
+                </div>
+            </div>
+            <div class="glass-panel stat-card">
+                <div class="stat-icon" style="color: #06b6d4;">👥</div>
+                <div class="stat-content">
+                    <h4>Active Analysts</h4>
+                    <div id="statUsers" class="stat-value">8</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <div class="glass-panel" style="padding: 1.5rem;">
+                <h3 style="margin-bottom: 1rem;">Recent Ingested Documents</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Document Name</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Timestamp</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentDocsTable">
+                        <tr>
+                            <td>Master_Services_Agreement_2026.docx</td>
+                            <td><span class="badge badge-purple">DOCX</span></td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                            <td>Just now</td>
+                            <td><a href="/analyze" class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>HIPAA_Patient_Privacy_Policy.pdf</td>
+                            <td><span class="badge badge-danger">PDF</span></td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                            <td>12m ago</td>
+                            <td><a href="/analyze" class="btn btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;">View</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="glass-panel" style="padding: 1.5rem;">
+                <h3 style="margin-bottom: 1rem;">Document Class Distribution</h3>
+                <div id="classDonut"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/charts.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            ChartEngine.renderDonut("classDonut", {
+                "Commercial Contracts": 45,
+                "NDA & Confidentiality": 32,
+                "Regulatory & Privacy": 24,
+                "Financial Statements": 15,
+                "Technical Specs": 8
+            });
+        });
+    </script>
+</body>
+</html>

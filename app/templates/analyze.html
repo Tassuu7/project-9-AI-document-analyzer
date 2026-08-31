@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Analyzer Studio - AI Document Analyzer</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/glassmorphism.css">
+    <link rel="stylesheet" href="/static/css/analyzer.css">
+</head>
+<body>
+    <header class="glass-nav">
+        <div class="nav-brand">
+            <span>⚡ DocIntel Enterprise</span>
+        </div>
+        <nav class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+            <a href="/analyze" class="nav-link active">Live Analyzer</a>
+            <a href="/compare" class="nav-link">Document Diff</a>
+            <a href="/compliance" class="nav-link">Compliance Center</a>
+            <a href="/export" class="nav-link">Export</a>
+            <button class="btn btn-secondary" onclick="App.toggleTheme()">🌓 Theme</button>
+            <a href="/auth" class="btn btn-primary">Portal</a>
+        </nav>
+    </header>
+
+    <div class="analyzer-workspace">
+        <!-- Left Pane: Input Editor -->
+        <div class="glass-panel editor-pane">
+            <div class="pane-header">
+                <h3>Document Ingestion</h3>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;" onclick="Analyzer.loadSample('nda')">Sample NDA</button>
+                    <button class="btn btn-secondary" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;" onclick="Analyzer.loadSample('breach')">Sample Audit</button>
+                </div>
+            </div>
+            <textarea id="docInput" class="text-editor" placeholder="Paste contract text, regulatory policy, financial statement, or medical record here..."></textarea>
+            <div style="padding: 1rem; border-top: 1px solid var(--border-glass); display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 0.8rem; color: var(--text-secondary);">Zero external API dependencies &bull; 100% Private</span>
+                <button id="analyzeBtn" class="btn btn-primary" onclick="Analyzer.runAnalysis()">⚡ Analyze Intelligence</button>
+            </div>
+        </div>
+
+        <!-- Right Pane: Intelligence Output -->
+        <div class="glass-panel results-pane">
+            <div class="pane-header">
+                <h3>Intelligence Report</h3>
+                <span id="classBadge" class="badge badge-purple">Ready</span>
+            </div>
+            
+            <div id="placeholderBox" style="flex: 1; display: flex; align-items: center; justify-content: center; color: var(--text-muted); flex-direction: column; gap: 1rem;">
+                <div style="font-size: 3rem;">🔍</div>
+                <p>Paste text on the left and click <strong>Analyze Intelligence</strong></p>
+            </div>
+
+            <div id="resultsContainer" class="results-scroll" style="display: none;">
+                <!-- Summary Card -->
+                <div class="glass-panel" style="padding: 1.25rem;">
+                    <h4 style="margin-bottom: 0.5rem; color: var(--accent-secondary);">Executive Summary</h4>
+                    <p id="summaryText" style="font-size: 0.9rem; color: var(--text-primary); line-height: 1.6;"></p>
+                </div>
+
+                <!-- Risk & Metrics Row -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="glass-panel" style="padding: 1.25rem; text-align: center;">
+                        <h4 style="margin-bottom: 0.75rem; color: var(--accent-rose);">Risk Index</h4>
+                        <div id="riskGauge"></div>
+                    </div>
+                    <div class="glass-panel" style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: center; gap: 0.75rem;">
+                        <h4 style="color: var(--accent-primary);">Linguistic Profile</h4>
+                        <div id="toneBadge" class="badge badge-info">Tone: Formal</div>
+                        <div id="polarityVal" style="font-size: 0.8rem; color: var(--text-secondary);">Polarity: 0.0</div>
+                        <div id="readabilityBadge" class="badge badge-success">Readability: Good</div>
+                        <div id="gradeLevelVal" style="font-size: 0.8rem; color: var(--text-secondary);">Grade Level: 12.0</div>
+                    </div>
+                </div>
+
+                <!-- Compliance Violations -->
+                <div class="glass-panel" style="padding: 1.25rem;">
+                    <h4 style="margin-bottom: 0.75rem; color: var(--accent-amber);">Compliance Audit</h4>
+                    <div id="complianceList"></div>
+                </div>
+
+                <!-- Interactive Entity Viewer -->
+                <div class="glass-panel" style="padding: 1.25rem;">
+                    <h4 style="margin-bottom: 0.75rem; color: var(--accent-emerald);">Named Entities & PII Map</h4>
+                    <div id="highlightedText" class="highlighted-viewer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/charts.js"></script>
+    <script src="/static/js/analyzer.js"></script>
+</body>
+</html>

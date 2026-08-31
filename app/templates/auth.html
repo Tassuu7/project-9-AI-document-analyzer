@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Security Portal - AI Document Analyzer</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/glassmorphism.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+    <header class="glass-nav">
+        <div class="nav-brand">
+            <span>⚡ DocIntel Enterprise</span>
+        </div>
+        <nav class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+            <a href="/analyze" class="nav-link">Live Analyzer</a>
+            <a href="/compare" class="nav-link">Document Diff</a>
+            <a href="/compliance" class="nav-link">Compliance Center</a>
+            <a href="/export" class="nav-link">Export</a>
+            <button class="btn btn-secondary" onclick="App.toggleTheme()">🌓 Theme</button>
+        </nav>
+    </header>
+
+    <main class="dashboard-container" style="max-width: 460px; margin-top: 4rem;">
+        <div class="glass-panel" style="padding: 2.5rem;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2>Security Authentication</h2>
+                <p style="color: var(--text-secondary); font-size: 0.875rem;">Access Document Intelligence Workspace</p>
+            </div>
+
+            <form id="authForm" onsubmit="handleAuth(event)" style="display: flex; flex-direction: column; gap: 1.25rem;">
+                <div>
+                    <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 0.4rem;">Username / Email</label>
+                    <input id="authUsername" type="text" value="analyst_admin" required style="width: 100%; padding: 0.75rem; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: var(--radius-md); color: var(--text-primary);">
+                </div>
+                <div>
+                    <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 0.4rem;">Password</label>
+                    <input id="authPassword" type="password" value="EnterpriseSecure2026!" required style="width: 100%; padding: 0.75rem; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: var(--radius-md); color: var(--text-primary);">
+                </div>
+                <button type="submit" class="btn btn-primary" style="padding: 0.8rem; margin-top: 0.5rem;">Sign In / Authorize</button>
+            </form>
+            <div style="text-align: center; margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted);">
+                Role-Based Access Control &bull; PBKDF2-SHA256 Token Auth
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        async function handleAuth(e) {
+            e.preventDefault();
+            const u = document.getElementById("authUsername").value;
+            const p = document.getElementById("authPassword").value;
+            try {
+                // Try login or register
+                try {
+                    const res = await App.request("/api/auth/login", {
+                        method: "POST",
+                        body: JSON.stringify({ username: u, password: p })
+                    });
+                    App.setToken(res.data.token);
+                    App.showToast("Login Successful! Redirecting...", "success");
+                    setTimeout(() => window.location.href = "/dashboard", 1000);
+                } catch(loginErr) {
+                    // Auto register default user if first run
+                    const regRes = await App.request("/api/auth/register", {
+                        method: "POST",
+                        body: JSON.stringify({ username: u, email: `${u}@enterprise.local`, password: p, role: "Admin", full_name: "Lead Intelligence Analyst" })
+                    });
+                    App.setToken(regRes.data.token);
+                    App.showToast("Account Created! Redirecting...", "success");
+                    setTimeout(() => window.location.href = "/dashboard", 1000);
+                }
+            } catch(err) {
+                App.showToast(err.message, "error");
+            }
+        }
+    </script>
+</body>
+</html>

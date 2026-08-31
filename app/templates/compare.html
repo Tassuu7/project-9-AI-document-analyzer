@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Diff & Semantic Drift - AI Document Analyzer</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/glassmorphism.css">
+    <link rel="stylesheet" href="/static/css/analyzer.css">
+</head>
+<body>
+    <header class="glass-nav">
+        <div class="nav-brand">
+            <span>⚡ DocIntel Enterprise</span>
+        </div>
+        <nav class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+            <a href="/analyze" class="nav-link">Live Analyzer</a>
+            <a href="/compare" class="nav-link active">Document Diff</a>
+            <a href="/compliance" class="nav-link">Compliance Center</a>
+            <a href="/export" class="nav-link">Export</a>
+            <button class="btn btn-secondary" onclick="App.toggleTheme()">🌓 Theme</button>
+            <a href="/auth" class="btn btn-primary">Portal</a>
+        </nav>
+    </header>
+
+    <div class="analyzer-workspace">
+        <div class="glass-panel editor-pane">
+            <div class="pane-header">
+                <h3>Version A (Original)</h3>
+            </div>
+            <textarea id="diffDocA" class="text-editor" placeholder="Paste original document text..."></textarea>
+        </div>
+
+        <div class="glass-panel editor-pane">
+            <div class="pane-header">
+                <h3>Version B (Modified)</h3>
+                <button class="btn btn-primary" onclick="runDiff()">Compare Versions</button>
+            </div>
+            <textarea id="diffDocB" class="text-editor" placeholder="Paste revised document text..."></textarea>
+        </div>
+    </div>
+
+    <div id="diffResults" class="dashboard-container" style="display: none; margin-top: 1rem;">
+        <div class="glass-panel" style="padding: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3>Comparison Metrics</h3>
+                <div id="similarityBadge" class="badge badge-success">Similarity: 100%</div>
+            </div>
+            <div id="diffSummary" style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;"></div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        async function runDiff() {
+            const a = document.getElementById("diffDocA").value;
+            const b = document.getElementById("diffDocB").value;
+            if(!a || !b) {
+                App.showToast("Please provide both versions", "warning");
+                return;
+            }
+            try {
+                const res = await App.request("/api/compare", {
+                    method: "POST",
+                    body: JSON.stringify({ text_a: a, text_b: b })
+                });
+                const data = res.data;
+                document.getElementById("diffResults").style.display = "block";
+                document.getElementById("similarityBadge").innerText = `Similarity: ${data.similarity_score}% (Drift: ${data.semantic_drift_percentage}%)`;
+                document.getElementById("diffSummary").innerText = `Modifications: ${data.lines_modified} | Additions: ${data.lines_added} | Deletions: ${data.lines_deleted}`;
+                App.showToast("Diff Computed Successfully", "success");
+            } catch(e) {
+                App.showToast(e.message, "error");
+            }
+        }
+    </script>
+</body>
+</html>
