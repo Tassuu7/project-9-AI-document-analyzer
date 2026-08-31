@@ -1,0 +1,14 @@
+{
+  "name": "ai-document-analyzer",
+  "version": "2.4.0",
+  "description": "Enterprise AI Document Intelligence & Compliance UI",
+  "private": true,
+  "scripts": {
+    "start": "python run.py",
+    "test": "python measure.py",
+    "measure": "python measure.py"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  }
+}

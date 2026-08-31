@@ -1,0 +1,6 @@
+# Deterministic Dependency Lockfile
+# Generated for AI Document Analyzer Enterprise Platform v2.4.0
+urllib3==2.2.1 --hash=sha256:a921794e44253ee142114f63c824339ffbc889eed7a174a527860ea85ab0f1fa
+certifi==2024.2.2 --hash=sha256:dc383c07b76109f368f61344fb2ad046dea10118b2c43aa5d7c5de0662f8d41f
+charset-normalizer==3.3.2 --hash=sha256:8464d72871ad914d702a2078ae9264edcb683233be681353275a5b7c2174d2cb
+idna==3.6 --hash=sha256:c05567e523ce29bb7333066103a4946970fe2b9c0306d678be833e0d8f3416e5

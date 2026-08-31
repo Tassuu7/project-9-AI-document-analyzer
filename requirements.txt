@@ -1,0 +1,7 @@
+# AI Document Analyzer Enterprise Platform Dependencies
+# Built on pure standard library with zero mandatory external API keys
+# Pinned deterministic versions for production stability
+urllib3==2.2.1
+certifi==2024.2.2
+charset-normalizer==3.3.2
+idna==3.6

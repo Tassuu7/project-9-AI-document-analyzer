@@ -1,0 +1,31 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database and uploaded binaries
+app/storage/data/uploads/*
+app/storage/data/processed/*
+app/storage/data/exports/*
+app/storage/data/analyzer.db
+!app/storage/data/.gitkeep
+*.db
+*.sqlite3
+
+# Environment and sensitive credential files
+.env
+.env.*
+*.pem
+*.key
+*.secret
+
+# IDE and OS artifacts
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Virtual environments
+venv/
+env/
+ENV/
