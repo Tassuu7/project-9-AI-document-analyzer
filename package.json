@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "start": "python run.py",
+    "build": "python setup.py build",
     "test": "python measure.py",
     "measure": "python measure.py"
   },
