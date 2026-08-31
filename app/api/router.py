@@ -8,7 +8,7 @@ from app.services.analyzer_service import AnalyzerService
 from app.services.comparison_service import ComparisonService
 from app.services.export_service import ExportService
 from app.services.stats_service import StatsService
-from app.nlp.compliance.compliance_taxonomy import COMPLIANCE_STANDARDS
+from app.nlp.lexicons.compliance_taxonomy import COMPLIANCE_STANDARDS
 
 def serve_template(handler, name: str):
     p = os.path.join(settings.BASE_DIR, "app", "templates", name)
