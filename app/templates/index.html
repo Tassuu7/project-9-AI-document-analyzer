@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Document Analyzer Enterprise Platform</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/glassmorphism.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+    <header class="glass-nav">
+        <div class="nav-brand">
+            <span>⚡ DocIntel Enterprise</span>
+        </div>
+        <nav class="nav-links">
+            <a href="/" class="nav-link active">Home</a>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+            <a href="/analyze" class="nav-link">Live Analyzer</a>
+            <a href="/compare" class="nav-link">Document Diff</a>
+            <a href="/compliance" class="nav-link">Compliance Center</a>
+            <a href="/export" class="nav-link">Export</a>
+            <button class="btn btn-secondary" onclick="App.toggleTheme()">🌓 Theme</button>
+            <a href="/auth" class="btn btn-primary">Login / Portal</a>
+        </nav>
+    </header>
+
+    <main class="dashboard-container" style="text-align: center; padding-top: 4rem;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <span class="badge badge-purple" style="margin-bottom: 1rem;">Proprietary &bull; 100% Offline NLP Engine &bull; Zero API Keys</span>
+            <h1 style="font-size: 3.2rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; background: linear-gradient(135deg, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                Next-Generation Intelligent Document Analysis & Compliance Auditing
+            </h1>
+            <p style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 2rem;">
+                Autonomous linguistic parsing, multi-framework regulatory audits (GDPR, HIPAA, SOC 2, PCI-DSS), entity recognition, risk scoring, and structural diffing.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="/analyze" class="btn btn-primary" style="padding: 0.8rem 1.8rem; font-size: 1rem;">⚡ Open Live Analyzer</a>
+                <a href="/dashboard" class="btn btn-secondary" style="padding: 0.8rem 1.8rem; font-size: 1rem;">📊 Telemetry Dashboard</a>
+            </div>
+        </div>
+
+        <div class="stats-grid" style="margin-top: 4rem; text-align: left;">
+            <div class="glass-panel stat-card">
+                <div class="stat-icon" style="color: #6366f1;">🧠</div>
+                <div class="stat-content">
+                    <h4>AI Engine</h4>
+                    <div class="stat-value">50,000+ LOC</div>
+                    <small style="color: var(--text-secondary);">Pure Python Standard Library</small>
+                </div>
+            </div>
+            <div class="glass-panel stat-card">
+                <div class="stat-icon" style="color: #10b981;">🛡️</div>
+                <div class="stat-content">
+                    <h4>Compliance</h4>
+                    <div class="stat-value">6 Standards</div>
+                    <small style="color: var(--text-secondary);">GDPR, HIPAA, SOC2, PCI-DSS</small>
+                </div>
+            </div>
+            <div class="glass-panel stat-card">
+                <div class="stat-icon" style="color: #06b6d4;">📑</div>
+                <div class="stat-content">
+                    <h4>Multi-Format</h4>
+                    <div class="stat-value">PDF/DOCX/TXT</div>
+                    <small style="color: var(--text-secondary);">CSV, JSON & Markdown</small>
+                </div>
+            </div>
+            <div class="glass-panel stat-card">
+                <div class="stat-icon" style="color: #f59e0b;">⚡</div>
+                <div class="stat-content">
+                    <h4>Latency</h4>
+                    <div class="stat-value">&lt; 15 ms</div>
+                    <small style="color: var(--text-secondary);">Instant Local Processing</small>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

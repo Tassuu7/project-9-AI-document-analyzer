@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Center - AI Document Analyzer</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/glassmorphism.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+    <header class="glass-nav">
+        <div class="nav-brand">
+            <span>⚡ DocIntel Enterprise</span>
+        </div>
+        <nav class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+            <a href="/analyze" class="nav-link">Live Analyzer</a>
+            <a href="/compare" class="nav-link">Document Diff</a>
+            <a href="/compliance" class="nav-link">Compliance Center</a>
+            <a href="/export" class="nav-link active">Export</a>
+            <button class="btn btn-secondary" onclick="App.toggleTheme()">🌓 Theme</button>
+            <a href="/auth" class="btn btn-primary">Portal</a>
+        </nav>
+    </header>
+
+    <main class="dashboard-container" style="max-width: 800px; text-align: center;">
+        <h2>Export Executive Reports & Entity Catalogs</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 2rem;">Export document intelligence results into structured industry formats.</p>
+
+        <div class="stats-grid">
+            <div class="glass-panel" style="padding: 2rem; text-align: center;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📄</div>
+                <h4>Formatted JSON</h4>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0.5rem 0 1rem 0;">Complete machine-readable document metadata, scores, and entity offsets.</p>
+                <a href="/analyze" class="btn btn-secondary" style="width: 100%;">Export JSON</a>
+            </div>
+            <div class="glass-panel" style="padding: 2rem; text-align: center;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📊</div>
+                <h4>Entities CSV</h4>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0.5rem 0 1rem 0;">Tabular spreadsheet of extracted PII, dates, monetary amounts, and organizations.</p>
+                <a href="/analyze" class="btn btn-secondary" style="width: 100%;">Export CSV</a>
+            </div>
+            <div class="glass-panel" style="padding: 2rem; text-align: center;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📝</div>
+                <h4>Markdown Brief</h4>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0.5rem 0 1rem 0;">Formatted executive summary and compliance audit report in GitHub-flavored Markdown.</p>
+                <a href="/analyze" class="btn btn-secondary" style="width: 100%;">Export MD</a>
+            </div>
+            <div class="glass-panel" style="padding: 2rem; text-align: center;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🖨️</div>
+                <h4>Printable HTML / PDF</h4>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0.5rem 0 1rem 0;">Standalone print-ready HTML page for client presentations and regulatory filing.</p>
+                <a href="/analyze" class="btn btn-primary" style="width: 100%;">Printable View</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
