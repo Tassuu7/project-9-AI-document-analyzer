@@ -7,6 +7,14 @@ import sys
 import os
 import time
 
+# Ensure UTF-8 stdout encoding on Windows
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 # Ensure project root is in python path
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 if ROOT_DIR not in sys.path:
@@ -26,7 +34,7 @@ def start_server():
     httpd = ThreadedHTTPServer(server_address, RequestHandler)
     
     print("=" * 70)
-    print("     ⚡ AI DOCUMENT ANALYZER ENTERPRISE PLATFORM (v2.4.0) ⚡")
+    print("     [+] AI DOCUMENT ANALYZER ENTERPRISE PLATFORM (v2.4.0)")
     print("=" * 70)
     print(f"  [*] Server Engine  : High-Performance Multi-Threaded HTTP/REST")
     print(f"  [*] Local URL      : {url}")
@@ -37,7 +45,7 @@ def start_server():
     print(f"  [*] Document Diff  : {url}/compare")
     print(f"  [*] Export Center  : {url}/export")
     print("=" * 70)
-    print(f"[+] Server listening on {url} ... Press Ctrl+C to stop.")
+    print(f"[+] Server listening on {url} ...")
     
     try:
         httpd.serve_forever()
