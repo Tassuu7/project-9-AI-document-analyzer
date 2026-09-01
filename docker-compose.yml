@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  inspector:
+    build: .
+    ports:
+      - "8974:8974"
+    volumes:
+      - ./app/storage/data:/app/app/storage/data
+    environment:
+      - PORT=8974
+      - HOST=0.0.0.0

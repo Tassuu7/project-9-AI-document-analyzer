@@ -1,5 +1,5 @@
 /**
- * Global App Engine & RBAC Authorization Manager for AI DOCUMENT INSPECTOR
+ * Global App Engine for AI DOCUMENT INSPECTOR (Clean, No Emojis, No Blue)
  */
 
 const App = {
@@ -31,7 +31,7 @@ const App = {
     this.showToast("Signed out successfully", "info");
     this.renderNavAuth();
     if (window.location.pathname !== "/auth" && window.location.pathname !== "/") {
-      setTimeout(() => window.location.href = "/auth", 600);
+      setTimeout(() => window.location.href = "/auth", 500);
     }
   },
 
@@ -60,16 +60,16 @@ const App = {
 
   showToast(message, type = "info") {
     const toast = document.createElement("div");
-    const badgeType = type === 'error' ? 'badge-danger' : type === 'success' ? 'badge-success' : type === 'warning' ? 'badge-warning' : 'badge-info';
+    const badgeType = type === 'error' ? 'badge-danger' : type === 'success' ? 'badge-success' : type === 'warning' ? 'badge-warning' : 'badge-neutral';
     toast.className = `badge ${badgeType}`;
-    toast.style.cssText = "position: fixed; bottom: 24px; right: 24px; z-index: 99999; padding: 12px 24px; font-size: 14px; font-weight: 600; box-shadow: 0 12px 32px rgba(0,0,0,0.6); backdrop-filter: blur(16px); animation: fadeIn 0.3s ease;";
+    toast.style.cssText = "position: fixed; bottom: 20px; right: 20px; z-index: 99999; padding: 10px 18px; font-size: 13px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.5);";
     toast.innerText = message;
     document.body.appendChild(toast);
     setTimeout(() => {
       toast.style.opacity = "0";
-      toast.style.transition = "opacity 0.4s ease";
-      setTimeout(() => toast.remove(), 400);
-    }, 3500);
+      toast.style.transition = "opacity 0.3s ease";
+      setTimeout(() => toast.remove(), 350);
+    }, 3000);
   },
 
   downloadFile(filename, content, mimeType = "text/plain") {
@@ -93,18 +93,15 @@ const App = {
     const user = this.getUser();
 
     if (token && user) {
-      const roleColor = user.role === 'ADMIN' ? 'badge-danger' : user.role === 'ANALYST' ? 'badge-purple' : 'badge-info';
       container.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <div class="badge ${roleColor}" style="padding: 0.4rem 0.75rem; font-size: 0.8rem;">
-            👤 ${user.username} <span style="opacity: 0.8; font-size: 11px;">(${user.role})</span>
-          </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span class="badge badge-neutral">${user.username} (${user.role})</span>
           <button class="btn btn-secondary btn-sm" onclick="App.logout()">Sign Out</button>
         </div>
       `;
     } else {
       container.innerHTML = `
-        <a href="/auth" class="btn btn-primary btn-sm">Sign In / Portal</a>
+        <a href="/auth" class="btn btn-primary btn-sm">Sign In</a>
       `;
     }
   },

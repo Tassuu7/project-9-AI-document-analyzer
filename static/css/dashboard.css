@@ -1,79 +1,35 @@
-/* Dashboard Grid, Stat Cards, and Telemetry Layout */
+/* Telemetry Dashboard Layout */
 .dashboard-container {
-  max-width: 1400px;
-  margin: 2rem auto;
-  padding: 0 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.25rem;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .stat-card {
-  padding: 1.5rem;
+  padding: 1.25rem;
   display: flex;
   align-items: center;
-  gap: 1.25rem;
-}
-
-.stat-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-glass);
+  gap: 1rem;
 }
 
 .stat-content h4 {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.stat-content .stat-value {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-top: 0.25rem;
-}
-
-.main-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 1.5rem;
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-}
-
-.data-table th {
-  padding: 0.85rem 1rem;
   font-size: 0.8rem;
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--text-secondary);
-  border-bottom: 1px solid var(--border-glass);
 }
 
-.data-table td {
-  padding: 1rem;
-  font-size: 0.875rem;
-  border-bottom: 1px solid var(--border-glass);
+.stat-value {
+  font-size: 1.6rem;
+  font-weight: 800;
   color: var(--text-primary);
-}
-
-.data-table tr:hover td {
-  background: var(--bg-glass-hover);
+  margin: 0.2rem 0;
 }

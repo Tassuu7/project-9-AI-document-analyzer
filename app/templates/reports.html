@@ -10,37 +10,31 @@
 </head>
 <body>
     <header class="glass-nav">
-        <div class="nav-brand">
-            <span>⚡ AI DOCUMENT INSPECTOR</span>
-        </div>
+        <div class="nav-brand">AI DOCUMENT INSPECTOR</div>
         <nav class="nav-links">
             <a href="/" class="nav-link">Home</a>
-            <a href="/dashboard" class="nav-link">Dashboard</a>
-            <a href="/inspect" class="nav-link">Inspection Studio</a>
+            <a href="/inspect" class="nav-link">Inspect Document</a>
             <a href="/issues" class="nav-link">Issue Center</a>
             <a href="/data-quality" class="nav-link">Data Quality</a>
-            <a href="/documents" class="nav-link">Library</a>
             <a href="/compare" class="nav-link">Compare</a>
-            <a href="/chat" class="nav-link">AI Assistant</a>
-            <a href="/compliance" class="nav-link">Compliance</a>
-            <button class="btn btn-secondary btn-sm" onclick="App.toggleTheme()">🌓 Theme</button>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+            <button class="btn btn-secondary btn-sm" onclick="App.toggleTheme()">Theme</button>
             <div id="navAuthBox"></div>
         </nav>
     </header>
 
     <main class="dashboard-container">
         <div style="margin-bottom: 1.5rem;">
-            <h2 style="font-size: 1.75rem; font-weight: 800;">Executive Reports & Multi-Format Exporter</h2>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">Generate print-ready HTML summaries, JSON data streams, CSV tables, and Markdown documentation.</p>
+            <h2 style="font-size: 1.5rem; font-weight: 800;">Inspection Reports & Exporter</h2>
+            <p style="color: var(--text-secondary); font-size: 0.875rem;">Generate print-ready HTML summaries, JSON data streams, CSV tables, and Markdown documentation.</p>
         </div>
 
         <div class="glass-panel" style="padding: 2rem; text-align: center;">
-            <div style="font-size: 3rem; margin-bottom: 1rem;">🖨️</div>
-            <h3>Export Completed Inspections</h3>
-            <p style="color: var(--text-secondary); max-width: 600px; margin: 0.5rem auto 1.5rem auto;">
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem;">Export Inspection Findings</h3>
+            <p style="color: var(--text-secondary); max-width: 600px; margin: 0.5rem auto 1.5rem auto; font-size: 0.875rem;">
                 Open any document in the Inspection Studio to export formatted PDF/HTML reports, CSV issues spreadsheets, or Markdown briefs.
             </p>
-            <a href="/inspect" class="btn btn-primary">⚡ Go to Inspection Studio</a>
+            <a href="/inspect" class="btn btn-primary">Open Inspection Studio</a>
         </div>
     </main>
 

@@ -3,77 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Document Inspector - Digital Quality & Risk Analysis Platform</title>
+    <title>AI Document Inspector - Find Errors. Detect Risks. Validate Data. Improve Documents.</title>
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="stylesheet" href="/static/css/glassmorphism.css">
     <link rel="stylesheet" href="/static/css/dashboard.css">
 </head>
 <body>
     <header class="glass-nav">
-        <div class="nav-brand">
-            <span>⚡ AI DOCUMENT INSPECTOR</span>
-        </div>
+        <div class="nav-brand">AI DOCUMENT INSPECTOR</div>
         <nav class="nav-links">
             <a href="/" class="nav-link active">Home</a>
-            <a href="/dashboard" class="nav-link">Dashboard</a>
-            <a href="/inspect" class="nav-link">Document Inspection</a>
+            <a href="/inspect" class="nav-link">Inspect Document</a>
             <a href="/issues" class="nav-link">Issue Center</a>
             <a href="/data-quality" class="nav-link">Data Quality</a>
-            <a href="/documents" class="nav-link">Library</a>
             <a href="/compare" class="nav-link">Compare</a>
-            <a href="/chat" class="nav-link">AI Assistant</a>
-            <a href="/compliance" class="nav-link">Compliance</a>
-            <button class="btn btn-secondary btn-sm" onclick="App.toggleTheme()">🌓 Theme</button>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+            <button class="btn btn-secondary btn-sm" onclick="App.toggleTheme()">Theme</button>
             <div id="navAuthBox"></div>
         </nav>
     </header>
 
     <main class="dashboard-container" style="text-align: center; padding-top: 3.5rem;">
-        <div class="badge badge-purple" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; margin-bottom: 1.5rem;">
-            🔍 Professional Digital Inspector for Documents & Data &bull; v3.0.0
+        <div class="badge badge-neutral" style="padding: 0.4rem 1rem; font-size: 0.8rem; margin-bottom: 1.5rem;">
+            Document Intelligence & Quality Verification Platform
         </div>
         
-        <h1 style="font-size: 3.2rem; font-weight: 900; letter-spacing: -0.03em; max-width: 950px; margin: 0 auto 1.2rem auto; line-height: 1.15;">
-            Upload. Inspect. Detect. Understand. Improve.
+        <h1 style="font-size: 2.8rem; font-weight: 800; letter-spacing: -0.02em; max-width: 900px; margin: 0 auto 1rem auto; line-height: 1.2;">
+            Find Errors. Detect Risks. Validate Data. Improve Documents.
         </h1>
         
-        <p style="color: var(--text-secondary); font-size: 1.2rem; max-width: 750px; margin: 0 auto 2.5rem auto; line-height: 1.6;">
-            Automatically inspect documents and structured datasets for text errors, data quality anomalies, cross-section contradictions, calculation errors, contract risks, and compliance breaches.
+        <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 700px; margin: 0 auto 2.5rem auto; line-height: 1.6;">
+            Automatically inspect documents and datasets for text errors, missing data, statistical outliers, calculation mistakes, cross-section contradictions, contract liabilities, and compliance breaches.
         </p>
 
         <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 3.5rem; flex-wrap: wrap;">
-            <a href="/inspect" class="btn btn-primary" style="padding: 0.9rem 2.2rem; font-size: 1rem;">⚡ Launch Document Inspector</a>
-            <a href="/dashboard" class="btn btn-secondary" style="padding: 0.9rem 2.2rem; font-size: 1rem;">📊 Open Telemetry Dashboard</a>
-            <a href="/auth" class="btn btn-secondary" style="padding: 0.9rem 1.8rem; font-size: 1rem;">🔑 Login Portal</a>
+            <a href="/inspect" class="btn btn-primary" style="padding: 0.75rem 1.8rem;">Inspect Document</a>
+            <a href="/compare" class="btn btn-secondary" style="padding: 0.75rem 1.8rem;">Compare Versions</a>
+            <a href="/issues" class="btn btn-secondary" style="padding: 0.75rem 1.8rem;">Issue Management</a>
         </div>
 
         <div class="stats-grid" style="text-align: left;">
             <div class="glass-panel stat-card">
-                <div class="stat-icon" style="color: #6366f1;">✍️</div>
                 <div class="stat-content">
                     <h4>Text & Grammar Error Detection</h4>
-                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Spelling mistakes, grammar heuristics, punctuation, repeated words, duplicate sentences.</p>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.3rem;">Spelling mistakes, grammar heuristics, punctuation, repeated words, duplicate sentences.</p>
                 </div>
             </div>
             <div class="glass-panel stat-card">
-                <div class="stat-icon" style="color: #06b6d4;">📊</div>
                 <div class="stat-content">
                     <h4>Smart Data Quality & Outliers</h4>
-                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Missing values, duplicate rows, data type violations, and IQR statistical outlier detection.</p>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.3rem;">Missing values, duplicate rows, data type violations, and IQR statistical outlier detection.</p>
                 </div>
             </div>
             <div class="glass-panel stat-card">
-                <div class="stat-icon" style="color: #10b981;">🧮</div>
                 <div class="stat-content">
-                    <h4>Cross-Field Calculation Checks</h4>
-                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Automated arithmetic verification (Qty × Price = Total, Tax + Subtotal = Total).</p>
+                    <h4>Cross-Field Calculations</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.3rem;">Automated arithmetic verification (Quantity × Price = Total, Subtotal + Tax = Total).</p>
                 </div>
             </div>
             <div class="glass-panel stat-card">
-                <div class="stat-icon" style="color: #f43f5e;">⚠️</div>
                 <div class="stat-content">
-                    <h4>Risk & Contract Liability Scorer</h4>
-                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Auto-renewal traps, unilateral termination, unlimited liability, plain-text credential leaks.</p>
+                    <h4>Risk & Contract Liability</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.3rem;">Auto-renewal traps, unilateral termination, unlimited liability, plain-text credential leaks.</p>
                 </div>
             </div>
         </div>

@@ -10,20 +10,15 @@
 </head>
 <body>
     <header class="glass-nav">
-        <div class="nav-brand">
-            <span>⚡ AI DOCUMENT INSPECTOR</span>
-        </div>
+        <div class="nav-brand">AI DOCUMENT INSPECTOR</div>
         <nav class="nav-links">
             <a href="/" class="nav-link">Home</a>
-            <a href="/dashboard" class="nav-link">Dashboard</a>
-            <a href="/inspect" class="nav-link">Inspection Studio</a>
+            <a href="/inspect" class="nav-link">Inspect Document</a>
             <a href="/issues" class="nav-link active">Issue Center</a>
             <a href="/data-quality" class="nav-link">Data Quality</a>
-            <a href="/documents" class="nav-link">Library</a>
             <a href="/compare" class="nav-link">Compare</a>
-            <a href="/chat" class="nav-link">AI Assistant</a>
-            <a href="/compliance" class="nav-link">Compliance</a>
-            <button class="btn btn-secondary btn-sm" onclick="App.toggleTheme()">🌓 Theme</button>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+            <button class="btn btn-secondary btn-sm" onclick="App.toggleTheme()">Theme</button>
             <div id="navAuthBox"></div>
         </nav>
     </header>
@@ -31,31 +26,28 @@
     <main class="dashboard-container">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
             <div>
-                <h2 style="font-size: 1.75rem; font-weight: 800;">Issue Management & Review Center</h2>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;">Track, review, resolve, and audit findings across all ingested documents.</p>
+                <h2 style="font-size: 1.5rem; font-weight: 800;">Issue Management & Review</h2>
+                <p style="color: var(--text-secondary); font-size: 0.875rem;">Review, resolve, and audit findings across all ingested documents.</p>
             </div>
-            <a href="/inspect" class="btn btn-primary">⚡ Inspect New Document</a>
+            <a href="/inspect" class="btn btn-primary">Inspect Document</a>
         </div>
 
         <div class="stats-grid">
             <div class="glass-panel stat-card">
-                <div class="stat-icon" style="color: #f43f5e;">🚨</div>
                 <div class="stat-content">
                     <h4>Critical Issues</h4>
-                    <div id="statCrit" class="stat-value">0</div>
-                    <small style="color: #fb7185;">Requires Immediate Fix</small>
+                    <div id="statCrit" class="stat-value" style="color: var(--status-danger-text);">0</div>
+                    <small style="color: var(--text-secondary);">Requires Immediate Fix</small>
                 </div>
             </div>
             <div class="glass-panel stat-card">
-                <div class="stat-icon" style="color: #ea580c;">⚠️</div>
                 <div class="stat-content">
                     <h4>High Severity</h4>
-                    <div id="statHigh" class="stat-value">0</div>
-                    <small style="color: #fdba74;">Action Recommended</small>
+                    <div id="statHigh" class="stat-value" style="color: var(--status-warning-text);">0</div>
+                    <small style="color: var(--text-secondary);">Action Recommended</small>
                 </div>
             </div>
             <div class="glass-panel stat-card">
-                <div class="stat-icon" style="color: #f59e0b;">⚡</div>
                 <div class="stat-content">
                     <h4>Medium / Low</h4>
                     <div id="statMed" class="stat-value">0</div>
@@ -63,16 +55,15 @@
                 </div>
             </div>
             <div class="glass-panel stat-card">
-                <div class="stat-icon" style="color: #10b981;">✓</div>
                 <div class="stat-content">
                     <h4>Resolved Issues</h4>
-                    <div id="statResolved" class="stat-value">0</div>
-                    <small style="color: #34d399;">Audit Verified</small>
+                    <div id="statResolved" class="stat-value" style="color: var(--status-success-text);">0</div>
+                    <small style="color: var(--text-secondary);">Audit Verified</small>
                 </div>
             </div>
         </div>
 
-        <div class="glass-panel" style="padding: 1.5rem; margin-top: 1.5rem;">
+        <div class="glass-panel" style="padding: 1.25rem; margin-top: 1.25rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 0.8rem;">
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                     <select id="filterCategory" class="btn btn-secondary btn-sm" onchange="loadIssues()">
@@ -101,7 +92,7 @@
                         <option value="IGNORED">Ignored</option>
                     </select>
                 </div>
-                <button class="btn btn-secondary btn-sm" onclick="loadIssues()">🔄 Refresh</button>
+                <button class="btn btn-secondary btn-sm" onclick="loadIssues()">Refresh</button>
             </div>
 
             <div id="issuesContainer"></div>
@@ -128,7 +119,7 @@
                 container.innerHTML = "";
 
                 if (issues.length === 0) {
-                    container.innerHTML = `<div class="badge badge-success" style="padding: 1.5rem; width: 100%; border-radius: 8px; text-align: center;">✓ No issues found matching filters.</div>`;
+                    container.innerHTML = `<div class="badge badge-success" style="padding: 1rem; width: 100%; border-radius: 6px; text-align: center;">No issues found matching filters.</div>`;
                     return;
                 }
 
@@ -140,23 +131,26 @@
                     if (iss.status === 'RESOLVED') resolved++;
 
                     const item = document.createElement("div");
-                    const sevColor = iss.severity === 'CRITICAL' ? '#f43f5e' : iss.severity === 'HIGH' ? '#ea580c' : iss.severity === 'MEDIUM' ? '#f59e0b' : '#10b981';
-                    const sevBadge = iss.severity === 'CRITICAL' ? 'badge-danger' : iss.severity === 'HIGH' ? 'badge-warning' : 'badge-info';
+                    const sevColor = iss.severity === 'CRITICAL' ? 'var(--status-danger)' : iss.severity === 'HIGH' ? 'var(--status-warning)' : 'var(--border-strong)';
+                    const sevBadge = iss.severity === 'CRITICAL' ? 'badge-danger' : iss.severity === 'HIGH' ? 'badge-warning' : 'badge-neutral';
                     
                     item.className = "glass-panel";
-                    item.style.cssText = `padding: 1.2rem; border-left: 4px solid ${sevColor}; margin-bottom: 0.85rem;`;
+                    item.style.cssText = `padding: 1rem; border-left: 4px solid ${sevColor}; margin-bottom: 0.8rem;`;
                     item.innerHTML = `
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.4rem;">
                             <div>
-                                <strong style="font-size: 1rem;">[${iss.category}] ${App.escapeHtml(iss.title)}</strong>
-                                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem;">📍 ${App.escapeHtml(iss.location)} &bull; Status: <strong>${iss.status}</strong></div>
+                                <strong style="font-size: 0.95rem;">${App.escapeHtml(iss.title)}</strong>
+                                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem;">Location: ${App.escapeHtml(iss.location)} &bull; Status: ${iss.status}</div>
                             </div>
                             <span class="badge ${sevBadge}">${iss.severity}</span>
                         </div>
-                        <p style="margin: 0.5rem 0; font-size: 0.85rem; line-height: 1.5;">${App.escapeHtml(iss.explanation)}</p>
-                        <p style="font-size: 0.85rem; color: #6ee7b7;"><strong>Recommendation:</strong> ${App.escapeHtml(iss.recommendation)}</p>
-                        <div style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.5rem;">
-                            <button class="btn btn-success btn-sm" onclick="updateStatus('${iss.id}', 'RESOLVED')">✓ Mark Resolved</button>
+                        <div style="font-size: 0.85rem; line-height: 1.5; margin: 0.4rem 0;">
+                            <div><span style="font-weight: 700; color: var(--text-secondary);">WHAT IS WRONG?</span> ${App.escapeHtml(iss.evidence || iss.value)}</div>
+                            <div><span style="font-weight: 700; color: var(--text-secondary);">WHY IS IT A PROBLEM?</span> ${App.escapeHtml(iss.explanation)}</div>
+                            <div><span style="font-weight: 700; color: var(--status-success-text);">WHAT SHOULD THE USER DO?</span> ${App.escapeHtml(iss.recommendation)}</div>
+                        </div>
+                        <div style="display: flex; gap: 0.4rem; justify-content: flex-end; margin-top: 0.5rem;">
+                            <button class="btn btn-success btn-sm" onclick="updateStatus('${iss.id}', 'RESOLVED')">Mark Resolved</button>
                             <button class="btn btn-secondary btn-sm" onclick="updateStatus('${iss.id}', 'IGNORED')">Ignore</button>
                             <button class="btn btn-danger btn-sm" onclick="updateStatus('${iss.id}', 'FALSE_POSITIVE')">False Positive</button>
                         </div>

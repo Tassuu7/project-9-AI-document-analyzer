@@ -4,7 +4,7 @@ from typing import List
 
 class Settings:
     APP_NAME: str = "AI DOCUMENT INSPECTOR"
-    APP_TAGLINE: str = "Upload. Inspect. Detect. Understand. Improve."
+    APP_TAGLINE: str = "Find Errors. Detect Risks. Validate Data. Improve Documents."
     APP_VERSION: str = "3.0.0"
     HOST: str = "127.0.0.1"
     PORT: int = 8974
