@@ -1,10 +1,11 @@
-"""Central Settings and Configuration."""
+"""Central Settings and Configuration for AI DOCUMENT INSPECTOR."""
 import os
 from typing import List
 
 class Settings:
-    APP_NAME: str = "AI Document Analyzer Enterprise Platform"
-    APP_VERSION: str = "2.4.0"
+    APP_NAME: str = "AI DOCUMENT INSPECTOR"
+    APP_TAGLINE: str = "Upload. Inspect. Detect. Understand. Improve."
+    APP_VERSION: str = "3.0.0"
     HOST: str = "127.0.0.1"
     PORT: int = 8974
     UNIQUE_LOCAL_URL: str = "http://127.0.0.1:8974"
@@ -15,12 +16,12 @@ class Settings:
     UPLOAD_DIR: str = os.path.join(STORAGE_DIR, "uploads")
     PROCESSED_DIR: str = os.path.join(STORAGE_DIR, "processed")
     EXPORTS_DIR: str = os.path.join(STORAGE_DIR, "exports")
-    DB_FILE: str = os.path.join(STORAGE_DIR, "analyzer.db")
+    DB_FILE: str = os.path.join(STORAGE_DIR, "inspector.db")
 
-    SESSION_COOKIE_NAME: str = "doc_analyzer_session"
+    SESSION_COOKIE_NAME: str = "doc_inspector_session"
     TOKEN_EXPIRATION_HOURS: int = 24
     MAX_UPLOAD_SIZE_MB: int = 50
-    ALLOWED_EXTENSIONS: List[str] = ["txt", "pdf", "docx", "csv", "json", "md", "html"]
+    ALLOWED_EXTENSIONS: List[str] = ["txt", "pdf", "docx", "csv", "xlsx", "json", "md", "html"]
 
     SUPPORTED_COMPLIANCE_STANDARDS: List[str] = [
         "GDPR", "HIPAA", "SOC2", "PCI-DSS", "CCPA", "ISO27001"

@@ -1,66 +1,72 @@
-"""Cryptographic Hashing and Token Security."""
-import os
-import hmac
+"""Authentication, Cryptography & Role-Based Authorization Engine."""
 import hashlib
+import hmac
 import base64
-import time
-import secrets
 import json
-from typing import Optional, Dict, Any
+import time
+import uuid
+import secrets
+from typing import Dict, Any, Optional
 
-class SecurityManager:
-    SECRET_SALT = b"doc_analyzer_enterprise_secure_salt_v2_2026"
-    ITERATIONS = 100_000
+SECRET_KEY = "enterprise-doc-inspector-secure-key-2026-strict-signature"
 
-    @classmethod
-    def hash_password(cls, password: str) -> str:
-        salt = secrets.token_bytes(16)
-        pwd_hash = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), cls.SECRET_SALT + salt, cls.ITERATIONS)
-        return f"{base64.b64encode(salt).decode('utf-8')}${base64.b64encode(pwd_hash).decode('utf-8')}"
+class Security:
+    ROLES = ["ADMIN", "ANALYST", "VIEWER"]
 
     @classmethod
-    def verify_password(cls, password: str, hashed_value: str) -> bool:
+    def hash_password(cls, password: str, salt: str = None) -> str:
+        if not salt:
+            salt = secrets.token_hex(16)
+        key = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt.encode("utf-8"), 100000)
+        return f"{salt}:{key.hex()}"
+
+    @classmethod
+    def verify_password(cls, password: str, password_hash: str) -> bool:
         try:
-            salt_b64, hash_b64 = hashed_value.split("$")
-            salt = base64.b64decode(salt_b64.encode("utf-8"))
-            expected_hash = base64.b64decode(hash_b64.encode("utf-8"))
-            actual_hash = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), cls.SECRET_SALT + salt, cls.ITERATIONS)
-            return hmac.compare_digest(expected_hash, actual_hash)
+            salt, stored_key = password_hash.split(":", 1)
+            calculated_key = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt.encode("utf-8"), 100000).hex()
+            return hmac.compare_digest(calculated_key, stored_key)
         except Exception:
             return False
 
     @classmethod
-    def generate_token(cls, payload: Dict[str, Any], expiry_seconds: int = 86400) -> str:
-        payload_data = payload.copy()
-        payload_data["exp"] = int(time.time()) + expiry_seconds
-        payload_data["nonce"] = secrets.token_hex(8)
-        encoded_payload = base64.urlsafe_b64encode(json.dumps(payload_data).encode("utf-8")).decode("utf-8").rstrip("=")
-        signature = hmac.new(cls.SECRET_SALT, encoded_payload.encode("utf-8"), hashlib.sha256).digest()
-        encoded_sig = base64.urlsafe_b64encode(signature).decode("utf-8").rstrip("=")
-        return f"{encoded_payload}.{encoded_sig}"
+    def generate_token(cls, user_id: str, username: str, role: str) -> str:
+        payload = {
+            "sub": user_id,
+            "username": username,
+            "role": role.upper(),
+            "iat": time.time(),
+            "exp": time.time() + (24 * 3600),
+            "jti": str(uuid.uuid4())
+        }
+        data = base64.urlsafe_b64encode(json.dumps(payload).encode("utf-8")).decode("utf-8").rstrip("=")
+        signature = hmac.new(SECRET_KEY.encode("utf-8"), data.encode("utf-8"), hashlib.sha256).hexdigest()
+        return f"{data}.{signature}"
 
     @classmethod
-    def verify_token(cls, token: str) -> Optional[Dict[str, Any]]:
+    def decode_token(cls, token: str) -> Optional[Dict[str, Any]]:
         try:
-            parts = token.split(".")
-            if len(parts) != 2:
+            if not token or "." not in token:
                 return None
-            encoded_payload, encoded_sig = parts
-            expected_sig = hmac.new(cls.SECRET_SALT, encoded_payload.encode("utf-8"), hashlib.sha256).digest()
-            expected_sig_b64 = base64.urlsafe_b64encode(expected_sig).decode("utf-8").rstrip("=")
-            if not hmac.compare_digest(encoded_sig, expected_sig_b64):
+            data_str, sig = token.split(".", 1)
+            expected_sig = hmac.new(SECRET_KEY.encode("utf-8"), data_str.encode("utf-8"), hashlib.sha256).hexdigest()
+            if not hmac.compare_digest(sig, expected_sig):
                 return None
-            pad_len = 4 - (len(encoded_payload) % 4)
-            if pad_len != 4:
-                encoded_payload += "=" * pad_len
-            payload_json = base64.urlsafe_b64decode(encoded_payload.encode("utf-8")).decode("utf-8")
-            payload = json.loads(payload_json)
-            if payload.get("exp", 0) < int(time.time()):
+            padded = data_str + "=" * (-len(data_str) % 4)
+            payload = json.loads(base64.urlsafe_b64decode(padded.encode("utf-8")).decode("utf-8"))
+            if payload.get("exp", 0) < time.time():
                 return None
             return payload
         except Exception:
             return None
 
     @classmethod
-    def generate_file_checksum(cls, file_bytes: bytes) -> str:
-        return hashlib.sha256(file_bytes).hexdigest()
+    def check_permission(cls, user_role: str, required_role: str) -> bool:
+        role_hierarchy = {"ADMIN": 3, "ANALYST": 2, "VIEWER": 1}
+        user_level = role_hierarchy.get(user_role.upper(), 0)
+        req_level = role_hierarchy.get(required_role.upper(), 99)
+        return user_level >= req_level
+
+    @classmethod
+    def calculate_checksum(cls, content: bytes) -> str:
+        return hashlib.sha256(content).hexdigest()

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Exports - AI Document Inspector</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/glassmorphism.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+    <header class="glass-nav">
+        <div class="nav-brand">
+            <span>⚡ AI DOCUMENT INSPECTOR</span>
+        </div>
+        <nav class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+            <a href="/inspect" class="nav-link">Inspection Studio</a>
+            <a href="/issues" class="nav-link">Issue Center</a>
+            <a href="/data-quality" class="nav-link">Data Quality</a>
+            <a href="/documents" class="nav-link">Library</a>
+            <a href="/compare" class="nav-link">Compare</a>
+            <a href="/chat" class="nav-link">AI Assistant</a>
+            <a href="/compliance" class="nav-link">Compliance</a>
+            <button class="btn btn-secondary btn-sm" onclick="App.toggleTheme()">🌓 Theme</button>
+            <div id="navAuthBox"></div>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <div style="margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.75rem; font-weight: 800;">Executive Reports & Multi-Format Exporter</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Generate print-ready HTML summaries, JSON data streams, CSV tables, and Markdown documentation.</p>
+        </div>
+
+        <div class="glass-panel" style="padding: 2rem; text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🖨️</div>
+            <h3>Export Completed Inspections</h3>
+            <p style="color: var(--text-secondary); max-width: 600px; margin: 0.5rem auto 1.5rem auto;">
+                Open any document in the Inspection Studio to export formatted PDF/HTML reports, CSV issues spreadsheets, or Markdown briefs.
+            </p>
+            <a href="/inspect" class="btn btn-primary">⚡ Go to Inspection Studio</a>
+        </div>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

@@ -1,23 +1,40 @@
-"""Plain Text & Markdown Parser."""
+"""Text & Markdown Document Parser."""
 import re
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 class TextParser:
     @classmethod
     def parse(cls, content: str) -> Dict[str, Any]:
-        normalized = content.replace("\r\n", "\n").replace("\r", "\n")
-        clean_text = re.sub(r"^#+\s+", "", normalized, flags=re.MULTILINE)
-        clean_text = re.sub(r"[*_]{1,3}(.*?)[*_]{1,3}", r"\1", clean_text)
-        clean_text = re.sub(r"\[(.*?)\]\(.*?\)", r"\1", clean_text)
-        paragraphs = [p.strip() for p in clean_text.split("\n\n") if p.strip()]
-        lines = [line.strip() for line in clean_text.split("\n") if line.strip()]
-        words = clean_text.split()
+        if not content:
+            return {"clean_text": "", "paragraphs": [], "sections": [], "word_count": 0, "line_count": 0, "char_count": 0, "page_count": 1}
+        
+        lines = content.splitlines()
+        clean_lines = [line.strip() for line in lines if line.strip()]
+        paragraphs = [p.strip() for p in re.split(r'\n\s*\n+', content) if p.strip()]
+        
+        sections = []
+        current_section = {"title": "Introduction", "content": []}
+        for line in lines:
+            if re.match(r'^(#{1,6}\s+|[0-9]+\.\s+|[A-Z\s]{4,}:)', line.strip()):
+                if current_section["content"]:
+                    sections.append({"title": current_section["title"], "content": "\n".join(current_section["content"])})
+                current_section = {"title": line.strip(), "content": []}
+            else:
+                current_section["content"].append(line)
+        if current_section["content"]:
+            sections.append({"title": current_section["title"], "content": "\n".join(current_section["content"])})
+
+        words = re.findall(r'[a-zA-Z0-9_-]+', content)
+        pages = max(1, len(words) // 400 + (1 if len(words) % 400 > 0 else 0))
+
         return {
-            "clean_text": clean_text,
+            "clean_text": content.strip(),
             "paragraphs": paragraphs,
-            "lines": lines,
+            "paragraph_count": len(paragraphs),
+            "sections": sections,
             "word_count": len(words),
-            "char_count": len(clean_text),
             "line_count": len(lines),
-            "paragraph_count": len(paragraphs)
+            "char_count": len(content),
+            "page_count": pages,
+            "tables": []
         }

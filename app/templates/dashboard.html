@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telemetry Dashboard - AI Document Analyzer</title>
+    <title>Executive Telemetry Dashboard - AI Document Inspector</title>
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="stylesheet" href="/static/css/glassmorphism.css">
     <link rel="stylesheet" href="/static/css/dashboard.css">
@@ -11,136 +11,121 @@
 <body>
     <header class="glass-nav">
         <div class="nav-brand">
-            <span>⚡ DocIntel Enterprise</span>
+            <span>⚡ AI DOCUMENT INSPECTOR</span>
         </div>
         <nav class="nav-links">
             <a href="/" class="nav-link">Home</a>
             <a href="/dashboard" class="nav-link active">Dashboard</a>
-            <a href="/analyze" class="nav-link">Live Analyzer</a>
-            <a href="/compare" class="nav-link">Document Diff</a>
-            <a href="/compliance" class="nav-link">Compliance Center</a>
-            <a href="/export" class="nav-link">Export</a>
+            <a href="/inspect" class="nav-link">Inspection Studio</a>
+            <a href="/issues" class="nav-link">Issue Center</a>
+            <a href="/data-quality" class="nav-link">Data Quality</a>
+            <a href="/documents" class="nav-link">Library</a>
+            <a href="/compare" class="nav-link">Compare</a>
+            <a href="/chat" class="nav-link">AI Assistant</a>
+            <a href="/compliance" class="nav-link">Compliance</a>
             <button class="btn btn-secondary btn-sm" onclick="App.toggleTheme()">🌓 Theme</button>
             <div id="navAuthBox"></div>
         </nav>
     </header>
 
     <main class="dashboard-container">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
             <div>
-                <h2 style="font-size: 1.75rem; font-weight: 800;">Enterprise Telemetry Dashboard</h2>
-                <p style="color: var(--text-secondary); font-size: 0.9rem;">Real-time analytical metrics, compliance posture, and repository monitoring.</p>
+                <h2 style="font-size: 1.75rem; font-weight: 800;">Real-Time Telemetry Dashboard</h2>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">High-level health scores, issue resolution velocity, and document catalog metrics.</p>
             </div>
-            <a href="/analyze" class="btn btn-primary">⚡ Ingest New Document</a>
+            <a href="/inspect" class="btn btn-primary">⚡ Inspect Document</a>
         </div>
 
         <div class="stats-grid">
             <div class="glass-panel stat-card">
-                <div class="stat-icon" style="color: #6366f1;">📑</div>
+                <div class="stat-icon" style="color: #6366f1;">📁</div>
                 <div class="stat-content">
                     <h4>Documents Analyzed</h4>
-                    <div id="statDocs" class="stat-value">128</div>
-                    <small style="color: var(--text-secondary);">Stored & Indexed</small>
+                    <div id="dashTotalDocs" class="stat-value">0</div>
+                    <small style="color: #34d399;">Active in Database</small>
                 </div>
             </div>
             <div class="glass-panel stat-card">
-                <div class="stat-icon" style="color: #f43f5e;">⚠️</div>
+                <div class="stat-icon" style="color: #10b981;">🏥</div>
                 <div class="stat-content">
-                    <h4>Average Risk Index</h4>
-                    <div id="statRisk" class="stat-value">24.5</div>
-                    <small style="color: #34d399;">Acceptable Band</small>
+                    <h4>Average Health Score</h4>
+                    <div id="dashAvgHealth" class="stat-value">85.4</div>
+                    <small style="color: #34d399;">Composite Quality</small>
                 </div>
             </div>
             <div class="glass-panel stat-card">
-                <div class="stat-icon" style="color: #10b981;">🛡️</div>
+                <div class="stat-icon" style="color: #f43f5e;">🚨</div>
                 <div class="stat-content">
-                    <h4>Compliance Pass Rate</h4>
-                    <div class="stat-value">96.8%</div>
-                    <small style="color: var(--text-secondary);">6 Standards Audited</small>
+                    <h4>Open Issues</h4>
+                    <div id="dashOpenIssues" class="stat-value">0</div>
+                    <small style="color: #fb7185;">Findings Tracked</small>
                 </div>
             </div>
             <div class="glass-panel stat-card">
                 <div class="stat-icon" style="color: #06b6d4;">👥</div>
                 <div class="stat-content">
-                    <h4>Active Analysts</h4>
-                    <div id="statUsers" class="stat-value">12</div>
-                    <small style="color: var(--text-secondary);">Role-Based RBAC</small>
+                    <h4>Active Users</h4>
+                    <div id="dashUsers" class="stat-value">3</div>
+                    <small style="color: var(--text-secondary);">RBAC Authenticated</small>
                 </div>
             </div>
         </div>
 
-        <div class="main-grid">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
             <div class="glass-panel" style="padding: 1.5rem;">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Recent Repository Documents</h3>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Document Name</th>
-                            <th>Classification</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recentDocsTable">
-                        <tr>
-                            <td>Master_Services_Agreement_2026.docx</td>
-                            <td><span class="badge badge-purple">Commercial Contract</span></td>
-                            <td><span class="badge badge-success">Completed</span></td>
-                            <td><a href="/analyze" class="btn btn-secondary btn-sm">Analyze</a></td>
-                        </tr>
-                        <tr>
-                            <td>Mutual_Non_Disclosure_Agreement.pdf</td>
-                            <td><span class="badge badge-info">NDA</span></td>
-                            <td><span class="badge badge-success">Completed</span></td>
-                            <td><a href="/analyze" class="btn btn-secondary btn-sm">Analyze</a></td>
-                        </tr>
-                        <tr>
-                            <td>Q3_Consolidated_Financial_10K.csv</td>
-                            <td><span class="badge badge-warning">Financial 10-K</span></td>
-                            <td><span class="badge badge-success">Completed</span></td>
-                            <td><a href="/analyze" class="btn btn-secondary btn-sm">Analyze</a></td>
-                        </tr>
-                        <tr>
-                            <td>HIPAA_Patient_Privacy_Disclosure.txt</td>
-                            <td><span class="badge badge-danger">Medical / HIPAA</span></td>
-                            <td><span class="badge badge-success">Completed</span></td>
-                            <td><a href="/analyze" class="btn btn-secondary btn-sm">Analyze</a></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem;">Recent Inspections</h3>
+                <div id="recentDocsList" style="display: flex; flex-direction: column; gap: 0.6rem;"></div>
             </div>
-
-            <div class="glass-panel" style="padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
-                <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Document Taxonomy Distribution</h3>
-                <div id="classDonut"></div>
-                <div style="margin-top: 1.5rem; text-align: center;">
-                    <a href="/compliance" class="btn btn-secondary" style="width: 100%;">View Regulatory Knowledge Base</a>
-                </div>
+            <div class="glass-panel" style="padding: 1.5rem;">
+                <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem;">Issues by Category</h3>
+                <div id="issuesCategoryList" style="display: flex; flex-direction: column; gap: 0.6rem;"></div>
             </div>
         </div>
     </main>
 
     <script src="/static/js/app.js"></script>
-    <script src="/static/js/charts.js"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            ChartEngine.renderDonut("classDonut", {
-                "Commercial Contracts": 48,
-                "NDA & Confidentiality": 36,
-                "Regulatory & Privacy": 26,
-                "Financial Statements": 18,
-                "Clinical & Medical": 12
-            });
-
+        async function loadDashboard() {
             try {
                 const res = await App.request("/api/stats/dashboard");
-                if (res.data) {
-                    document.getElementById("statDocs").innerText = res.data.total_documents || 128;
-                    document.getElementById("statRisk").innerText = res.data.average_risk_score || 24.5;
-                    document.getElementById("statUsers").innerText = res.data.total_users || 12;
+                const d = res.data;
+                document.getElementById("dashTotalDocs").innerText = d.total_documents;
+                document.getElementById("dashAvgHealth").innerText = d.average_health_score;
+                document.getElementById("dashOpenIssues").innerText = d.issue_metrics ? d.issue_metrics.open_issues_count : 0;
+                document.getElementById("dashUsers").innerText = d.total_users;
+
+                const recentList = document.getElementById("recentDocsList");
+                recentList.innerHTML = "";
+                (d.recent_documents || []).forEach(doc => {
+                    const item = document.createElement("div");
+                    item.className = "glass-panel";
+                    item.style.cssText = "padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center;";
+                    item.innerHTML = `
+                        <div>
+                            <strong>${App.escapeHtml(doc.original_name)}</strong>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary);">${doc.file_type.toUpperCase()} &bull; Health: ${doc.health_score || 85}/100</div>
+                        </div>
+                        <a href="/inspect?id=${doc.id}" class="btn btn-secondary btn-sm">View</a>
+                    `;
+                    recentList.appendChild(item);
+                });
+
+                const catList = document.getElementById("issuesCategoryList");
+                catList.innerHTML = "";
+                const cats = d.issue_metrics ? d.issue_metrics.by_category : {};
+                for (const [cat, count] of Object.entries(cats)) {
+                    const item = document.createElement("div");
+                    item.className = "glass-panel";
+                    item.style.cssText = "padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center;";
+                    item.innerHTML = `<span><strong>${cat}</strong></span> <span class="badge badge-purple">${count} Findings</span>`;
+                    catList.appendChild(item);
                 }
-            } catch(e) {}
-        });
+            } catch(e) {
+                App.showToast(e.message, "error");
+            }
+        }
+        document.addEventListener("DOMContentLoaded", loadDashboard);
     </script>
 </body>
 </html>

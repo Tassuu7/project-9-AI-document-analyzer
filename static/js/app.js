@@ -1,10 +1,10 @@
 /**
- * Core Global Application Engine & Universal Auth Manager
+ * Global App Engine & RBAC Authorization Manager for AI DOCUMENT INSPECTOR
  */
 
 const App = {
-  tokenKey: "doc_analyzer_jwt_token",
-  userKey: "doc_analyzer_user",
+  tokenKey: "inspector_jwt_token",
+  userKey: "inspector_user",
 
   getToken() {
     return localStorage.getItem(this.tokenKey);
@@ -13,9 +13,9 @@ const App = {
   getUser() {
     try {
       const u = localStorage.getItem(this.userKey);
-      return u ? JSON.parse(u) : { username: "analyst_guest", role: "Lead Analyst", full_name: "Lead Intelligence Analyst" };
+      return u ? JSON.parse(u) : { id: "user_default", username: "analyst", role: "ANALYST", full_name: "Lead Document Analyst" };
     } catch(e) {
-      return { username: "analyst_guest", role: "Lead Analyst", full_name: "Lead Intelligence Analyst" };
+      return { id: "user_default", username: "analyst", role: "ANALYST", full_name: "Lead Document Analyst" };
     }
   },
 
@@ -30,8 +30,8 @@ const App = {
     localStorage.removeItem(this.userKey);
     this.showToast("Signed out successfully", "info");
     this.renderNavAuth();
-    if (window.location.pathname === "/dashboard") {
-      setTimeout(() => window.location.href = "/auth", 800);
+    if (window.location.pathname !== "/auth" && window.location.pathname !== "/") {
+      setTimeout(() => window.location.href = "/auth", 600);
     }
   },
 
@@ -93,10 +93,11 @@ const App = {
     const user = this.getUser();
 
     if (token && user) {
+      const roleColor = user.role === 'ADMIN' ? 'badge-danger' : user.role === 'ANALYST' ? 'badge-purple' : 'badge-info';
       container.innerHTML = `
         <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <div class="badge badge-purple" style="padding: 0.4rem 0.75rem; font-size: 0.8rem;">
-            👤 ${user.username} <span style="opacity: 0.75; font-size: 11px;">(${user.role || 'Analyst'})</span>
+          <div class="badge ${roleColor}" style="padding: 0.4rem 0.75rem; font-size: 0.8rem;">
+            👤 ${user.username} <span style="opacity: 0.8; font-size: 11px;">(${user.role})</span>
           </div>
           <button class="btn btn-secondary btn-sm" onclick="App.logout()">Sign Out</button>
         </div>
@@ -109,7 +110,7 @@ const App = {
   },
 
   initTheme() {
-    const saved = localStorage.getItem("doc_theme") || "dark";
+    const saved = localStorage.getItem("inspector_theme") || "dark";
     document.documentElement.setAttribute("data-theme", saved);
   },
 
@@ -117,7 +118,12 @@ const App = {
     const current = document.documentElement.getAttribute("data-theme") || "dark";
     const next = current === "dark" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("doc_theme", next);
+    localStorage.setItem("inspector_theme", next);
+  },
+
+  escapeHtml(str) {
+    if (!str) return "";
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
   }
 };
 

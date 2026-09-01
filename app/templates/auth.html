@@ -3,115 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Security Portal - AI Document Analyzer</title>
+    <title>Authentication & RBAC Portal - AI Document Inspector</title>
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="stylesheet" href="/static/css/glassmorphism.css">
-    <link rel="stylesheet" href="/static/css/dashboard.css">
 </head>
-<body>
-    <header class="glass-nav">
-        <div class="nav-brand">
-            <span>⚡ DocIntel Enterprise</span>
-        </div>
-        <nav class="nav-links">
-            <a href="/" class="nav-link">Home</a>
-            <a href="/dashboard" class="nav-link">Dashboard</a>
-            <a href="/analyze" class="nav-link">Live Analyzer</a>
-            <a href="/compare" class="nav-link">Document Diff</a>
-            <a href="/compliance" class="nav-link">Compliance Center</a>
-            <a href="/export" class="nav-link">Export</a>
-            <button class="btn btn-secondary btn-sm" onclick="App.toggleTheme()">🌓 Theme</button>
-            <div id="navAuthBox"></div>
-        </nav>
-    </header>
+<body style="display: flex; align-items: center; justify-content: center; min-height: 100vh; background: var(--bg-primary);">
+    <div class="glass-panel" style="width: 100%; max-width: 440px; padding: 2.5rem; text-align: center;">
+        <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">⚡</div>
+        <h2 style="font-size: 1.5rem; font-weight: 800;">AI DOCUMENT INSPECTOR</h2>
+        <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1.5rem;">Sign in to access document inspection, review workflows, and reports</p>
 
-    <main class="dashboard-container" style="max-width: 500px; margin: 3.5rem auto;">
-        <div class="glass-panel" style="padding: 2.5rem;">
-            <div style="text-align: center; margin-bottom: 1.5rem;">
-                <h2 style="font-size: 1.6rem; font-weight: 800;">Enterprise Security Portal</h2>
-                <p style="color: var(--text-secondary); font-size: 0.875rem;">Access Document Intelligence Workspace</p>
-            </div>
-
-            <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; background: rgba(0,0,0,0.25); padding: 4px; border-radius: var(--radius-md);">
-                <button id="tabLogin" class="btn btn-primary" style="flex: 1; font-size: 0.85rem;" onclick="switchAuthTab('login')">Sign In</button>
-                <button id="tabRegister" class="btn btn-secondary" style="flex: 1; font-size: 0.85rem;" onclick="switchAuthTab('register')">Create Account</button>
-            </div>
-
-            <form id="authForm" onsubmit="handleAuthSubmit(event)" style="display: flex; flex-direction: column; gap: 1.1rem;">
-                <div id="fullNameGroup" style="display: none;">
-                    <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 0.35rem;">Full Name</label>
-                    <input id="authFullName" type="text" placeholder="Lead Intelligence Analyst" style="width: 100%; padding: 0.75rem; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: var(--radius-md); color: var(--text-primary);">
-                </div>
-                <div>
-                    <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 0.35rem;">Username</label>
-                    <input id="authUsername" type="text" value="analyst_admin" required style="width: 100%; padding: 0.75rem; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: var(--radius-md); color: var(--text-primary);">
-                </div>
-                <div id="emailGroup" style="display: none;">
-                    <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 0.35rem;">Email Address</label>
-                    <input id="authEmail" type="email" placeholder="analyst@enterprise.local" style="width: 100%; padding: 0.75rem; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: var(--radius-md); color: var(--text-primary);">
-                </div>
-                <div>
-                    <label style="font-size: 0.8rem; color: var(--text-secondary); display: block; margin-bottom: 0.35rem;">Password</label>
-                    <input id="authPassword" type="password" value="EnterpriseSecure2026!" required style="width: 100%; padding: 0.75rem; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: var(--radius-md); color: var(--text-primary);">
-                </div>
-                <button type="submit" id="authSubmitBtn" class="btn btn-primary" style="padding: 0.85rem; font-size: 0.95rem; margin-top: 0.5rem;">Sign In / Authorize</button>
-            </form>
-
-            <div style="text-align: center; margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted);">
-                PBKDF2-SHA256 Cryptographic Authentication &bull; Zero External Secret Leaks
+        <!-- Fast Demo Fill -->
+        <div style="background: rgba(0,0,0,0.2); border-radius: var(--radius-md); padding: 0.8rem; margin-bottom: 1.5rem;">
+            <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 700;">FAST DEMO LOGIN:</div>
+            <div style="display: flex; gap: 0.4rem; justify-content: center;">
+                <button class="btn btn-secondary btn-sm" onclick="demoLogin('admin', 'AdminPass2026!')">👑 Admin</button>
+                <button class="btn btn-primary btn-sm" onclick="demoLogin('analyst', 'AnalystPass2026!')">🔍 Analyst</button>
+                <button class="btn btn-secondary btn-sm" onclick="demoLogin('viewer', 'ViewerPass2026!')">👁️ Viewer</button>
             </div>
         </div>
-    </main>
+
+        <form id="loginForm" onsubmit="handleLogin(event)" style="display: flex; flex-direction: column; gap: 1rem; text-align: left;">
+            <div>
+                <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Username or Email</label>
+                <input id="authUsername" type="text" required style="width: 100%; padding: 0.75rem; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: var(--radius-md); color: var(--text-primary); margin-top: 0.3rem;">
+            </div>
+            <div>
+                <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Password</label>
+                <input id="authPassword" type="password" required style="width: 100%; padding: 0.75rem; background: var(--bg-tertiary); border: 1px solid var(--border-glass); border-radius: var(--radius-md); color: var(--text-primary); margin-top: 0.3rem;">
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem; padding: 0.85rem;">Sign In</button>
+        </form>
+    </div>
 
     <script src="/static/js/app.js"></script>
     <script>
-        let currentMode = "login";
-
-        function switchAuthTab(mode) {
-            currentMode = mode;
-            document.getElementById("tabLogin").className = mode === 'login' ? 'btn btn-primary' : 'btn btn-secondary';
-            document.getElementById("tabRegister").className = mode === 'register' ? 'btn btn-primary' : 'btn btn-secondary';
-            document.getElementById("fullNameGroup").style.display = mode === 'register' ? 'block' : 'none';
-            document.getElementById("emailGroup").style.display = mode === 'register' ? 'block' : 'none';
-            document.getElementById("authSubmitBtn").innerText = mode === 'login' ? 'Sign In / Authorize' : 'Register Account';
+        function demoLogin(u, p) {
+            document.getElementById("authUsername").value = u;
+            document.getElementById("authPassword").value = p;
+            document.getElementById("loginForm").dispatchEvent(new Event('submit'));
         }
 
-        async function handleAuthSubmit(e) {
+        async function handleLogin(e) {
             e.preventDefault();
-            const u = document.getElementById("authUsername").value.trim();
+            const u = document.getElementById("authUsername").value;
             const p = document.getElementById("authPassword").value;
-            const full = document.getElementById("authFullName").value.trim() || u;
-            const email = document.getElementById("authEmail").value.trim() || `${u}@enterprise.local`;
 
             try {
-                if (currentMode === "login") {
-                    try {
-                        const res = await App.request("/api/auth/login", {
-                            method: "POST",
-                            body: JSON.stringify({ username: u, password: p })
-                        });
-                        App.setAuth(res.data.user, res.data.token);
-                        App.showToast("Signed In Successfully! Redirecting...", "success");
-                        setTimeout(() => window.location.href = "/dashboard", 800);
-                    } catch(loginErr) {
-                        // Auto register if user does not exist
-                        const regRes = await App.request("/api/auth/register", {
-                            method: "POST",
-                            body: JSON.stringify({ username: u, email, password: p, full_name: full, role: "Lead Analyst" })
-                        });
-                        App.setAuth(regRes.data.user, regRes.data.token);
-                        App.showToast("Account Created & Signed In! Redirecting...", "success");
-                        setTimeout(() => window.location.href = "/dashboard", 800);
-                    }
-                } else {
-                    const regRes = await App.request("/api/auth/register", {
-                        method: "POST",
-                        body: JSON.stringify({ username: u, email, password: p, full_name: full, role: "Lead Analyst" })
-                    });
-                    App.setAuth(regRes.data.user, regRes.data.token);
-                    App.showToast("Account Created Successfully! Redirecting...", "success");
-                    setTimeout(() => window.location.href = "/dashboard", 800);
-                }
+                const res = await App.request("/api/auth/login", {
+                    method: "POST",
+                    body: JSON.stringify({ username: u, password: p })
+                });
+                App.setAuth(res.data.user, res.data.token);
+                App.showToast(`Welcome back, ${res.data.user.full_name}!`, "success");
+                setTimeout(() => window.location.href = "/dashboard", 600);
             } catch(err) {
                 App.showToast(err.message, "error");
             }

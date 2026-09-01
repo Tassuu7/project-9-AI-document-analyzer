@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Data Quality & Profiling - AI Document Inspector</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link rel="stylesheet" href="/static/css/glassmorphism.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+</head>
+<body>
+    <header class="glass-nav">
+        <div class="nav-brand">
+            <span>⚡ AI DOCUMENT INSPECTOR</span>
+        </div>
+        <nav class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/dashboard" class="nav-link">Dashboard</a>
+            <a href="/inspect" class="nav-link">Inspection Studio</a>
+            <a href="/issues" class="nav-link">Issue Center</a>
+            <a href="/data-quality" class="nav-link active">Data Quality</a>
+            <a href="/documents" class="nav-link">Library</a>
+            <a href="/compare" class="nav-link">Compare</a>
+            <a href="/chat" class="nav-link">AI Assistant</a>
+            <a href="/compliance" class="nav-link">Compliance</a>
+            <button class="btn btn-secondary btn-sm" onclick="App.toggleTheme()">🌓 Theme</button>
+            <div id="navAuthBox"></div>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <div>
+                <h2 style="font-size: 1.75rem; font-weight: 800;">Smart Data Quality Profiler</h2>
+                <p style="color: var(--text-secondary); font-size: 0.9rem;">Automated profiling, missing data metrics, duplicate detection, and statistical outlier scanning.</p>
+            </div>
+            <a href="/inspect" class="btn btn-primary">⚡ Ingest Dataset</a>
+        </div>
+
+        <div class="stats-grid">
+            <div class="glass-panel stat-card">
+                <div class="stat-content">
+                    <h4>Completeness</h4>
+                    <div class="stat-value" style="color: #10b981;">96.4%</div>
+                    <small style="color: var(--text-secondary);">Low Null Rates</small>
+                </div>
+            </div>
+            <div class="glass-panel stat-card">
+                <div class="stat-content">
+                    <h4>Validity</h4>
+                    <div class="stat-value" style="color: #06b6d4;">94.2%</div>
+                    <small style="color: var(--text-secondary);">Type Conformity</small>
+                </div>
+            </div>
+            <div class="glass-panel stat-card">
+                <div class="stat-content">
+                    <h4>Uniqueness</h4>
+                    <div class="stat-value" style="color: #a855f7;">98.8%</div>
+                    <small style="color: var(--text-secondary);">Deduplicated Records</small>
+                </div>
+            </div>
+            <div class="glass-panel stat-card">
+                <div class="stat-content">
+                    <h4>Consistency</h4>
+                    <div class="stat-value" style="color: #f59e0b;">91.5%</div>
+                    <small style="color: var(--text-secondary);">Format Alignment</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-panel" style="padding: 1.5rem; margin-top: 1.5rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 1rem;">Structured Column Profiler & Statistics</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Column Name</th>
+                        <th>Inferred Type</th>
+                        <th>Null Rate</th>
+                        <th>Unique Values</th>
+                        <th>Mean / Cardinality</th>
+                        <th>Outliers (IQR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>EmployeeID</td>
+                        <td><span class="badge badge-purple">Integer / ID</span></td>
+                        <td>0.0%</td>
+                        <td>1,240</td>
+                        <td>High Cardinality</td>
+                        <td>0 Detected</td>
+                    </tr>
+                    <tr>
+                        <td>FullName</td>
+                        <td><span class="badge badge-info">Text / Name</span></td>
+                        <td>0.2%</td>
+                        <td>1,235</td>
+                        <td>Normal String</td>
+                        <td>N/A</td>
+                    </tr>
+                    <tr>
+                        <td>Age</td>
+                        <td><span class="badge badge-warning">Numeric</span></td>
+                        <td>1.4%</td>
+                        <td>48</td>
+                        <td>34.2 (Std: 8.4)</td>
+                        <td><span class="badge badge-danger">2 Outliers</span></td>
+                    </tr>
+                    <tr>
+                        <td>Salary</td>
+                        <td><span class="badge badge-success">Currency</span></td>
+                        <td>0.0%</td>
+                        <td>412</td>
+                        <td>$84,500</td>
+                        <td><span class="badge badge-warning">1 Potential Anomaly</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
