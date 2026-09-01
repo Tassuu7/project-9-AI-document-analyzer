@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Inspection Studio - AI Document Inspector</title>
+    <title>Document Analyzer Studio - AI Document Inspector</title>
     <link rel="stylesheet" href="/static/css/main.css">
     <link rel="stylesheet" href="/static/css/glassmorphism.css">
     <link rel="stylesheet" href="/static/css/analyzer.css">
@@ -24,39 +24,71 @@
     </header>
 
     <div class="analyzer-workspace">
-        <!-- Left Pane: Ingestion & Document Preview -->
+        <!-- Left Pane: Ingestion, Editor, & Multi-Tab Text Studio -->
         <div class="glass-panel editor-pane">
             <div class="pane-header">
                 <div>
-                    <h3 style="font-size: 0.95rem; font-weight: 700;">Document Ingestion</h3>
-                    <small id="wordCountBadge" style="color: var(--text-secondary);">0 words</small>
+                    <h3 style="font-size: 0.95rem; font-weight: 700;">Document Studio</h3>
+                    <small id="wordCountBadge" style="color: var(--text-secondary);">0 words &bull; 0 min read</small>
                 </div>
                 <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+                    <button class="btn btn-secondary btn-sm" onclick="Inspector.loadSample('docx')">Sample DOCX</button>
                     <button class="btn btn-secondary btn-sm" onclick="Inspector.loadSample('nda')">Sample Contract</button>
-                    <button class="btn btn-secondary btn-sm" onclick="Inspector.loadSample('audit')">Sample Audit</button>
-                    <button class="btn btn-secondary btn-sm" onclick="Inspector.loadSample('data')">Sample Data (CSV)</button>
+                    <button class="btn btn-secondary btn-sm" onclick="Inspector.loadSample('audit')">Sample Report</button>
                 </div>
+            </div>
+
+            <!-- In-Document Live Search -->
+            <div style="padding: 0.5rem 1.25rem; background: var(--bg-tertiary); border-bottom: 1px solid var(--border-subtle); display: flex; gap: 0.5rem; align-items: center;">
+                <input type="text" id="inDocSearch" placeholder="Search inside document..." style="flex: 1; padding: 0.35rem 0.6rem; background: var(--bg-secondary); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.8rem;" oninput="Inspector.searchInDocument()">
+                <span id="searchMatchesBadge" class="badge badge-neutral">0 matches</span>
+            </div>
+
+            <!-- Tabs: Original, Corrected, Paraphrased -->
+            <div style="display: flex; background: var(--bg-secondary); border-bottom: 1px solid var(--border-subtle);">
+                <button id="tabOriginal" class="filter-btn active" style="flex: 1; border-radius: 0; border: none; border-bottom: 2px solid var(--accent-primary); padding: 0.6rem;" onclick="Inspector.switchTab('original')">Original Text</button>
+                <button id="tabCorrected" class="filter-btn" style="flex: 1; border-radius: 0; border: none; padding: 0.6rem;" onclick="Inspector.switchTab('corrected')">Corrected Text</button>
+                <button id="tabParaphrased" class="filter-btn" style="flex: 1; border-radius: 0; border: none; padding: 0.6rem;" onclick="Inspector.switchTab('paraphrased')">Paraphrased</button>
             </div>
 
             <!-- Dropzone -->
             <div id="fileDropzone" class="dropzone">
-                <input type="file" id="filePicker" style="display: none;" accept=".txt,.pdf,.docx,.csv,.xlsx,.json,.md">
-                <span style="font-size: 0.85rem; color: var(--text-secondary);">Drag and drop PDF, DOCX, CSV, XLSX, JSON, TXT or click to browse</span>
+                <input type="file" id="filePicker" style="display: none;" accept=".docx,.txt,.pdf,.csv,.xlsx,.json,.md">
+                <span style="font-size: 0.85rem; color: var(--text-secondary);">Drag and drop .DOCX, PDF, CSV, TXT or click to browse</span>
             </div>
 
-            <textarea id="docInput" class="text-editor" placeholder="Paste document content, contract clauses, or structured data here..."></textarea>
+            <!-- Textareas for Tabs -->
+            <textarea id="docInput" class="text-editor" placeholder="Paste document content, DOCX paragraphs, or text here..."></textarea>
+            <textarea id="correctedInput" class="text-editor" style="display: none;" placeholder="Corrected text will appear here after inspection..."></textarea>
+            <textarea id="paraphrasedInput" class="text-editor" style="display: none;" placeholder="Paraphrased text will appear here..."></textarea>
             
+            <!-- Paraphrasing Modes Bar -->
+            <div id="paraphraseBar" style="padding: 0.5rem 1.25rem; background: var(--bg-tertiary); border-top: 1px solid var(--border-subtle); display: none; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+                <div style="display: flex; gap: 0.35rem; align-items: center;">
+                    <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-secondary);">Mode:</span>
+                    <button class="filter-btn active" onclick="Inspector.runParaphrase('professional')">Professional</button>
+                    <button class="filter-btn" onclick="Inspector.runParaphrase('simple')">Simple</button>
+                    <button class="filter-btn" onclick="Inspector.runParaphrase('academic')">Academic</button>
+                    <button class="filter-btn" onclick="Inspector.runParaphrase('formal')">Formal</button>
+                    <button class="filter-btn" onclick="Inspector.runParaphrase('concise')">Concise</button>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="Inspector.exportDocx('paraphrased')">Export Paraphrased DOCX</button>
+            </div>
+
             <div style="padding: 0.75rem 1.25rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; background: var(--bg-secondary);">
-                <button class="btn btn-secondary btn-sm" onclick="document.getElementById('docInput').value='';">Clear</button>
+                <div style="display: flex; gap: 0.4rem;">
+                    <button class="btn btn-secondary btn-sm" onclick="document.getElementById('docInput').value=''; Inspector.runInspection();">Clear</button>
+                    <button class="btn btn-secondary btn-sm" onclick="Inspector.exportDocx('corrected')">Export DOCX</button>
+                </div>
                 <button id="inspectBtn" class="btn btn-primary" onclick="Inspector.runInspection()">Run Document Inspection</button>
             </div>
         </div>
 
-        <!-- Right Pane: Comprehensive Inspection Findings -->
+        <!-- Right Pane: Comprehensive Analysis & Explanations -->
         <div class="glass-panel results-pane">
             <div class="pane-header">
                 <div>
-                    <h3 style="font-size: 0.95rem; font-weight: 700;">Inspection Findings & Health</h3>
+                    <h3 style="font-size: 0.95rem; font-weight: 700;">Inspection & Quality Suite</h3>
                     <div style="display: flex; gap: 0.5rem; margin-top: 0.2rem;">
                         <span id="classBadge" class="badge badge-neutral">Classifying...</span>
                         <span id="issueCountBadge" class="badge badge-neutral">0 Findings</span>
@@ -70,32 +102,35 @@
                 </div>
             </div>
 
-            <div id="placeholderBox" style="flex: 1; display: none; align-items: center; justify-content: center; color: var(--text-muted); flex-direction: column; gap: 1rem;">
-                <p>Paste text on the left and click <strong>Run Document Inspection</strong></p>
-            </div>
-
             <div id="resultsContainer" class="results-scroll">
-                <!-- Health Score & Metric Badges -->
-                <div style="display: grid; grid-template-columns: 180px 1fr; gap: 1rem;">
+                <!-- Scorecards: Health + Writing Quality -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div class="glass-panel" style="padding: 1rem; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                        <div class="card-title">Health Score</div>
+                        <div class="card-title">Overall Health</div>
                         <div id="healthGauge"></div>
-                    </div>
-                    <div class="glass-panel" style="padding: 1rem; display: flex; flex-direction: column; justify-content: center; gap: 0.5rem;">
-                        <div class="card-title">Dimension Breakdown</div>
-                        <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
-                            <span id="textScorePill" class="badge badge-neutral">Text Quality: 95/100</span>
-                            <span id="dataScorePill" class="badge badge-neutral">Data Quality: 90/100</span>
+                        <div style="display: flex; gap: 0.3rem; margin-top: 0.5rem; flex-wrap: wrap; justify-content: center;">
+                            <span id="textScorePill" class="badge badge-neutral">Text: 95/100</span>
+                            <span id="dataScorePill" class="badge badge-neutral">Data: 90/100</span>
                             <span id="riskScorePill" class="badge badge-neutral">Risk: LOW</span>
-                            <span id="compScorePill" class="badge badge-neutral">Compliance: 92/100</span>
+                        </div>
+                    </div>
+                    <div class="glass-panel" style="padding: 1rem; display: flex; flex-direction: column; justify-content: center; gap: 0.4rem;">
+                        <div class="card-title">Writing Quality & Readability</div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: var(--text-primary);" id="writingScoreVal">88 / 100</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);" id="readabilityLabel">Standard / Plain English</div>
+                        <div style="display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.2rem;">
+                            <span class="badge badge-neutral" id="fkGradeBadge">F-K Grade: 8.2</span>
+                            <span class="badge badge-neutral" id="gunningBadge">Fog: 9.4</span>
+                            <span class="badge badge-neutral" id="readingTimeBadge">1.2 min read</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Executive Summary -->
+                <!-- Executive Summary & Key Points -->
                 <div class="glass-panel" style="padding: 1rem;">
-                    <div class="card-title">Executive Summary</div>
+                    <div class="card-title">Executive Summary & Key Points</div>
                     <p id="summaryText" style="font-size: 0.85rem; color: var(--text-primary); line-height: 1.6;"></p>
+                    <div id="keywordsContainer" style="display: flex; gap: 0.3rem; margin-top: 0.5rem; flex-wrap: wrap;"></div>
                 </div>
 
                 <!-- Issue Filters Bar -->
@@ -104,22 +139,15 @@
                     <button id="btnFilter_ALL" class="filter-btn active" onclick="Inspector.filterIssues('ALL')">All Findings</button>
                     <button id="btnFilter_CRITICAL" class="filter-btn" onclick="Inspector.filterIssues('CRITICAL')">Critical</button>
                     <button id="btnFilter_HIGH" class="filter-btn" onclick="Inspector.filterIssues('HIGH')">High</button>
-                    <button id="btnFilter_TEXT_ERROR" class="filter-btn" onclick="Inspector.filterIssues('TEXT_ERROR')">Text Errors</button>
-                    <button id="btnFilter_DATA_QUALITY" class="filter-btn" onclick="Inspector.filterIssues('DATA_QUALITY')">Data Quality</button>
-                    <button id="btnFilter_CALCULATION" class="filter-btn" onclick="Inspector.filterIssues('CALCULATION')">Calculations</button>
-                    <button id="btnFilter_CONSISTENCY" class="filter-btn" onclick="Inspector.filterIssues('CONSISTENCY')">Contradictions</button>
-                    <button id="btnFilter_PII" class="filter-btn" onclick="Inspector.filterIssues('PII')">PII</button>
-                    <button id="btnFilter_COMPLIANCE" class="filter-btn" onclick="Inspector.filterIssues('COMPLIANCE')">Compliance</button>
+                    <button id="btnFilter_TEXT_ERROR" class="filter-btn" onclick="Inspector.filterIssues('TEXT_ERROR')">Spelling/Grammar</button>
+                    <button id="btnFilter_PASSIVE_VOICE" class="filter-btn" onclick="Inspector.filterIssues('PASSIVE_VOICE')">Passive Voice</button>
+                    <button id="btnFilter_COMPLEXITY" class="filter-btn" onclick="Inspector.filterIssues('COMPLEXITY')">Complex Sentences</button>
+                    <button id="btnFilter_FILLER_WORD" class="filter-btn" onclick="Inspector.filterIssues('FILLER_WORD')">Filler Words</button>
+                    <button id="btnFilter_DUPLICATE_TEXT" class="filter-btn" onclick="Inspector.filterIssues('DUPLICATE_TEXT')">Duplicates</button>
                 </div>
 
                 <!-- Issues Feed -->
                 <div id="issuesList"></div>
-
-                <!-- Document Content Viewer -->
-                <div class="glass-panel" style="padding: 1rem;">
-                    <div class="card-title">Document Content</div>
-                    <div id="documentViewerText" class="highlighted-viewer"></div>
-                </div>
             </div>
         </div>
     </div>
